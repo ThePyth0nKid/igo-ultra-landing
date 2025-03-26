@@ -1,12 +1,119 @@
-# React + Vite
+# iGoUltra – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**iGoUltra** is an immersive frontend experience built with **Vite**, **React**, **Tailwind CSS v4**, and **shadcn/ui**, designed for a new kind of digital-physical XP game.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧱 Tech Stack
 
-## Expanding the ESLint configuration
+- [Vite](https://vitejs.dev/) – blazing-fast frontend tooling  
+- [React 18](https://reactjs.org/) – UI library  
+- [Tailwind CSS v4](https://tailwindcss.com/) – utility-first CSS  
+- [shadcn/ui](https://ui.shadcn.com/) – beautiful UI components  
+- [Framer Motion](https://www.framer.com/motion/) – animations  
+- [Lucide Icons](https://lucide.dev/) – icon system  
+- Custom 3D Cards, Parallax & Scroll Effects
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧪 Local Development
+
+```bash
+# install dependencies
+npm install
+
+# start dev server
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) in your browser.
+
+---
+
+## 🔐 Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+VITE_API_URL=https://your-backend-url.com
+```
+
+> This URL is used to connect the frontend to the Django backend.
+
+---
+
+## 🚀 Deployment
+
+This project is deployed via [Vercel](https://vercel.com)
+
+- `main` branch → production  
+- `dev` branch → preview deployments (safe testing)
+
+Every push triggers a new deployment automatically.
+
+---
+
+## 🌍 Project Structure
+
+```
+src/
+├── components/         → UI components (Navbar, XP display, Cards, etc.)
+├── lib/                → API calls and shared functions
+├── pages/              → Main page views (if routing is used)
+├── styles/             → Tailwind config & global styles
+├── App.tsx             → Root component
+```
+
+---
+
+## 🌐 Backend Connection
+
+The frontend communicates with the **Django REST API** using `fetch()` with the URL from `VITE_API_URL`.
+
+Make sure your Django backend:
+
+- Has CORS enabled for Vercel + localhost  
+- Exposes routes like `/api/xp/` that return JSON
+
+---
+
+## 🧭 Current Features
+
+- Ultra-styled responsive layout  
+- Animated 3D Mission Card  
+- XP Progress Bar  
+- Glow Buttons & Navbar with Scroll Detection  
+- Parallax / ScrollReveal Elements  
+- Tailwind CSS v4 Custom Theme Integration
+
+---
+
+## 🧠 To Do
+
+- [ ] Connect to real XP API (DRF)  
+- [ ] Dynamic level system  
+- [ ] Leaderboard & user stats  
+- [ ] User authentication (JWT or Session)  
+- [ ] Weekly/Monthly Grind Rewards  
+- [ ] Full XP Game Loop  
+- [ ] Integrate with sensors / AR (future)
+
+---
+
+## 👤 Author
+
+Developed with purpose by:
+
+**Nelson Mehlis**  
+Founder & Visionary of [iGoUltra](https://igo-ultra.org)
+
+---
+
+## 💬 Community
+
+Join the [iGoUltra Discord](https://discord.gg/igo-ultra)  
+→ Become part of the **Ultra Tribe**  
+→ Set your goal. Fight your demons.  
+→ **Level up in real life.**
+
+**AHHU.** 🥷
