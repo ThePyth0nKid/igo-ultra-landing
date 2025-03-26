@@ -105,13 +105,13 @@ Make sure your Django backend:
 Developed with purpose by:
 
 **Nelson Mehlis**  
-Founder & Visionary of [iGoUltra](https://igo-ultra.org)
+Founder & Visionary of [iGoUltra](https://igoultra.org)
 
 ---
 
 ## 💬 Community
 
-Join the [iGoUltra Discord](https://discord.gg/igo-ultra)  
+Join the [iGoUltra Discord](https://discord.gg/6QT6sHxSFJ)  
 → Become part of the **Ultra Tribe**  
 → Set your goal. Fight your demons.  
 → **Level up in real life.**
