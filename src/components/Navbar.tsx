@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
   const [scrolled, setScrolled] = useState(false)
@@ -69,10 +70,10 @@ const Navbar = () => {
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
             <Button asChild className={buttonStyle}>
-              <a href="#">Login</a>
+              <Link to="/login">Login</Link>
             </Button>
             <Button asChild className={buttonStyle}>
-              <a href="#">Sign up</a>
+              <Link to="/signup">Sign up</Link>
             </Button>
           </motion.div>
 
@@ -109,10 +110,10 @@ const Navbar = () => {
             {/* Mobile action buttons */}
             <div className="flex flex-col gap-4 w-full mt-4">
               <Button asChild className={buttonStyle}>
-                <a href="#">Login</a>
+                <Link to="/login" onClick={() => setMenuOpen(false)}>Login</Link>
               </Button>
               <Button asChild className={buttonStyle}>
-                <a href="#">Sign up</a>
+                <Link to="/signup" onClick={() => setMenuOpen(false)}>Sign up</Link>
               </Button>
             </div>
           </motion.div>
