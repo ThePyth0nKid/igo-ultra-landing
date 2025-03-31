@@ -8,6 +8,7 @@ import {
 import { useNavigate } from "react-router-dom"
 
 const Signup = () => {
+  // State for form inputs and error
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -15,24 +16,30 @@ const Signup = () => {
   const [error, setError] = useState("")
   const navigate = useNavigate()
 
+  // Handles user registration
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault()
     setError("")
 
+    // Password match check
     if (password !== password2) {
       setError("Passwords do not match")
       return
     }
 
     try {
+      // Send POST request to registration endpoint (public route)
       await API.post("/users/register/", {
         username,
         email,
         password,
         password2,
       })
+
+      // Redirect to login page after successful registration
       navigate("/login")
     } catch (err: any) {
+      // Extract error message from response
       const msg =
         err.response?.data?.detail ||
         Object.values(err.response?.data || {})[0]?.[0] ||
@@ -41,6 +48,7 @@ const Signup = () => {
     }
   }
 
+  // Reusable button style
   const buttonStyle =
     "bg-ultra-red hover:bg-red-600 text-white text-sm px-6 py-2 sm:px-8 sm:py-3 rounded-full font-ultra tracking-widest shadow-xl border-2 border-white hover:shadow-red-700 transition-all duration-300 transform hover:scale-110 animate-pulse"
 
@@ -61,6 +69,7 @@ const Signup = () => {
             onSubmit={handleSignup}
             className="w-full space-y-4 max-w-sm mx-auto text-left"
           >
+            {/* Username Field */}
             <CardItem translateZ={20}>
               <input
                 type="text"
@@ -68,9 +77,11 @@ const Signup = () => {
                 className="w-full bg-black/80 text-white border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-ultra-red"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                required
               />
             </CardItem>
 
+            {/* Email Field */}
             <CardItem translateZ={20}>
               <input
                 type="email"
@@ -78,9 +89,11 @@ const Signup = () => {
                 className="w-full bg-black/80 text-white border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-ultra-red"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </CardItem>
 
+            {/* Password Field */}
             <CardItem translateZ={20}>
               <input
                 type="password"
@@ -88,9 +101,11 @@ const Signup = () => {
                 className="w-full bg-black/80 text-white border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-ultra-red"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </CardItem>
 
+            {/* Confirm Password Field */}
             <CardItem translateZ={20}>
               <input
                 type="password"
@@ -98,6 +113,7 @@ const Signup = () => {
                 className="w-full bg-black/80 text-white border border-gray-700 rounded px-4 py-2 focus:outline-none focus:border-ultra-red"
                 value={password2}
                 onChange={(e) => setPassword2(e.target.value)}
+                required
               />
             </CardItem>
 
@@ -108,7 +124,7 @@ const Signup = () => {
               </CardItem>
             )}
 
-            {/* Signup Button */}
+            {/* Submit Button */}
             <CardItem translateZ={20} className="flex justify-center">
               <button type="submit" className={buttonStyle}>
                 Create Account
