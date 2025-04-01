@@ -7,6 +7,7 @@ import { Menu, X } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
 import axios from "@/lib/axios"
 
+// User type definition
 interface User {
   username: string
   avatar?: string
@@ -21,19 +22,18 @@ const Navbar = () => {
   const [user, setUser] = useState<User | null>(null)
   const navigate = useNavigate()
 
-  // Detect scroll for navbar styling
+  // Detect scroll to apply sticky navbar styling
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Check login status and fetch profile
+  // On mount: check if token exists and fetch user data
   useEffect(() => {
     const token = localStorage.getItem("access_token")
     if (token) {
       setIsLoggedIn(true)
-      // Fetch user profile
       axios.get("/api/users/me/")
         .then(res => {
           setUser(res.data)
@@ -41,11 +41,12 @@ const Navbar = () => {
         .catch(err => {
           console.error("Error fetching user:", err)
           setIsLoggedIn(false)
+          setUser(null)
         })
     }
   }, [])
 
-  // Handle logout logic
+  // Handle logout action
   const handleLogout = () => {
     localStorage.removeItem("access_token")
     setIsLoggedIn(false)
@@ -53,6 +54,7 @@ const Navbar = () => {
     navigate("/")
   }
 
+  // Section links only for non-authenticated users
   const navItems = ["Mission", "Roadmap", "Community"]
 
   const buttonStyle =
@@ -60,6 +62,7 @@ const Navbar = () => {
 
   return (
     <>
+      {/* Main navigation bar */}
       <motion.nav
         initial={{ y: -40, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -71,35 +74,39 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto grid grid-cols-3 items-center relative">
 
-          {/* Logo left */}
+          {/* Left: Logo */}
           <div className="flex items-center">
             <img src="/logo.png" alt="iGoUltra Logo" className="h-10 w-auto" />
           </div>
 
-          {/* Center nav links */}
-          <motion.div
-            className="hidden md:flex justify-center space-x-6 text-sm text-white font-medium"
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            {navItems.map((label, i) => (
-              <motion.a
-                key={label}
-                href={`#${label.toLowerCase()}`}
-                className="hover:text-ultra-red transition"
-                initial={{ y: -20, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ delay: 0.3 + i * 0.15, duration: 0.4, ease: "easeOut" }}
-              >
-                {label}
-              </motion.a>
-            ))}
-          </motion.div>
+          {/* Center: Navigation links (only if not logged in) */}
+          {!isLoggedIn ? (
+            <motion.div
+              className="hidden md:flex justify-center space-x-6 text-sm text-white font-medium"
+              initial={{ y: -20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              {navItems.map((label, i) => (
+                <motion.a
+                  key={label}
+                  href={`#${label.toLowerCase()}`}
+                  className="hover:text-ultra-red transition"
+                  initial={{ y: -20, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ delay: 0.3 + i * 0.15, duration: 0.4, ease: "easeOut" }}
+                >
+                  {label}
+                </motion.a>
+              ))}
+            </motion.div>
+          ) : (
+            <div /> // keeps grid structure clean
+          )}
 
-          {/* Right side: auth buttons or profile */}
+          {/* Right: Auth buttons or profile */}
           <motion.div
-            className="hidden md:flex justify-end items-center gap-4"
+            className="hidden md:flex justify-end items-center gap-6 text-sm text-white font-medium"
             initial={{ x: -80, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
@@ -117,7 +124,6 @@ const Navbar = () => {
               <>
                 {user && (
                   <div className="text-white text-sm font-light mr-2">
-                    {/* Username and optional XP/Level */}
                     Hi, <span className="font-semibold">{user.username}</span>
                     {user.level !== undefined && (
                       <span className="ml-2 text-ultra-red">Lv. {user.level}</span>
@@ -134,7 +140,7 @@ const Navbar = () => {
             )}
           </motion.div>
 
-          {/* Mobile Burger Menu */}
+          {/* Mobile menu toggle */}
           <div className="md:hidden absolute right-6 top-1/2 -translate-y-1/2">
             <button onClick={() => setMenuOpen(!menuOpen)} className="text-white">
               {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -143,7 +149,7 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Mobile menu section */}
+      {/* Mobile dropdown menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -152,17 +158,20 @@ const Navbar = () => {
             exit={{ y: -100, opacity: 0 }}
             className="fixed top-16 left-0 w-full bg-black/95 z-40 px-6 py-8 flex flex-col items-center gap-6 text-white text-xl backdrop-blur"
           >
-            {navItems.map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
-                onClick={() => setMenuOpen(false)}
-                className="hover:text-ultra-red transition"
-              >
-                {item}
-              </a>
-            ))}
+            {/* Section links on mobile */}
+            {!isLoggedIn &&
+              navItems.map((item) => (
+                <a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  onClick={() => setMenuOpen(false)}
+                  className="hover:text-ultra-red transition"
+                >
+                  {item}
+                </a>
+              ))}
 
+            {/* Auth buttons on mobile */}
             <div className="flex flex-col gap-4 w-full mt-4">
               {!isLoggedIn ? (
                 <>
