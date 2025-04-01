@@ -29,7 +29,7 @@ const Signup = () => {
 
     try {
       // Send POST request to registration endpoint (public route)
-      await API.post("/users/register/", {
+      await API.post("/api/users/register/", {
         username,
         email,
         password,
@@ -60,7 +60,7 @@ const Signup = () => {
           {/* Headline */}
           <CardItem translateZ={30}>
             <h1 className="text-3xl font-bold text-ultra-red mb-2">
-              Join the Ultra Army
+              Join the Tribe
             </h1>
           </CardItem>
 

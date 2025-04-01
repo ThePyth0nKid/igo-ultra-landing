@@ -17,13 +17,13 @@ const Login = () => {
     e.preventDefault()
     setError("") // clear old errors
     try {
-      const res = await API.post("/token/", {
+      const res = await API.post("/api/token/", {
         username,
         password,
       })
-      localStorage.setItem("access", res.data.access)
-      localStorage.setItem("refresh", res.data.refresh)
-      navigate("/dashboard")
+      localStorage.setItem("access_token", res.data.access)
+      localStorage.setItem("refresh_token", res.data.refresh)
+      window.location.href = "/dashboard"
     } catch (err: any) {
       const msg =
         err.response?.data?.detail || "Login failed. Please try again."

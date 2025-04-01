@@ -13,7 +13,7 @@ API.interceptors.request.use((config) => {
   );
 
   if (!isPublic) {
-    const token = localStorage.getItem("access");
+    const token = localStorage.getItem("access_token");;
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
