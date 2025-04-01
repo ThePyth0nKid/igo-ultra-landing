@@ -88,3 +88,11 @@
     @apply text-primary hover:text-accent;
   }
 }
+
+/* === Fix für Framer Motion Scroll Messung === */
+html,
+body,
+#root {
+  position: relative;
+  height: 100%;
+}

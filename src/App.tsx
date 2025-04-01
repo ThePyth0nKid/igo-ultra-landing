@@ -7,8 +7,8 @@ import Roadmap from './components/Roadmap'
 import Community from './components/Community'
 import Footer from './components/Footer'
 import Login from './pages/Login'
-import Signup from './pages/Signup' // Ensure this file exists in the correct path
-import Dashboard from './pages/Dashboard' // 👈 Wichtig: hinzufügen
+import Signup from './pages/Signup'
+import Dashboard from './pages/Dashboard'
 
 const App = () => {
   return (
@@ -20,13 +20,13 @@ const App = () => {
         <Route
           path="/"
           element={
-            <>
+            <div className="relative">
               <Hero />
               <Mission />
               <Roadmap />
               <Community />
               <Footer />
-            </>
+            </div>
           }
         />
 

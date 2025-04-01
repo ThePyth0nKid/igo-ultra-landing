@@ -1,20 +1,63 @@
-import React from 'react'
+import React from "react"
+import { Timeline } from "@/components/ui/timeline"
 
-const Roadmap = () => {
+interface RoadmapItem {
+  title: string
+  content: React.ReactNode
+}
+
+const roadmapItems: RoadmapItem[] = [
+  {
+    title: "The Grind Game Launch",
+    content: (
+      <p>
+        Beta-Testphase startet mit <strong>XP-System</strong>, Challenges &
+        Leaderboard.
+      </p>
+    ),
+  },
+  {
+    title: "UltraButton Platform",
+    content: (
+      <p>
+        Registrierung, XP-Tracking, Echtzeit-Dashboard & Discord-Bot powered by{" "}
+        <strong>the Architect</strong>.
+      </p>
+    ),
+  },
+  {
+    title: "XP Wearables Integration",
+    content: (
+      <p>
+        Verbindung zu <em>Smartwatches</em>, Sensoren & Kameras für echtes
+        Leveln.
+      </p>
+    ),
+  },
+  {
+    title: "iGoUltra Manga Volume 1",
+    content: (
+      <p>
+        Der offizielle Release der ersten Kapitel mit{" "}
+        <strong>Tasame Imora</strong> & dem <span>🧠 Architekten</span>.
+      </p>
+    ),
+  },
+  {
+    title: "VR/AR Game World",
+    content: (
+      <p>
+        Das digitale Spielfeld wird Realität – mit Portalen, Dungeons &
+        Dämonen. <span>👁‍🗨</span>
+      </p>
+    ),
+  },
+]
+
+const Roadmap: React.FC = () => {
   return (
-    <section id="roadmap" className="py-24 px-6 max-w-5xl mx-auto">
-      <h2 className="text-4xl font-bold text-center mb-8">Roadmap</h2>
-      <ul className="space-y-6">
-        <li className="border-l-4 border-ultra-red pl-4 text-gray-300">
-          <strong>Phase 1:</strong> Landingpage + XP-System online bringen ✅
-        </li>
-        <li className="border-l-4 border-ultra-red pl-4 text-gray-300">
-          <strong>Phase 2:</strong> Discord Bot + Leaderboard-Integration 🛠️
-        </li>
-        <li className="border-l-4 border-ultra-red pl-4 text-gray-300">
-          <strong>Phase 3:</strong> Avatar-System, Game & Ultra-App 🚀
-        </li>
-      </ul>
+    <section id="roadmap" className="relative">
+      <Timeline data={roadmapItems} />
     </section>
   )
 }
