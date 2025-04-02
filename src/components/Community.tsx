@@ -6,9 +6,9 @@ import { Carousel, Card } from "@/components/ui/carousel"
 const Community = () => {
   const items = [
     {
-      title: "Ultra Tribe",
-      category: "Community",
-      src: "/images/community1.jpg",
+      title: "Franzi aka Alpaka",
+      category: "Suporter",
+      src: "src/images/AlpakaV1.jpg",
       content: (
         <p>
           Unsere Ultra-Family wächst täglich. Finde Gleichgesinnte, die denselben inneren Kampf führen.
@@ -16,9 +16,9 @@ const Community = () => {
       ),
     },
     {
-      title: "XP Ranks",
-      category: "Gamification",
-      src: "/images/community2.jpg",
+      title: "Smash the Brick Commander",
+      category: "Character Story Design",
+      src: "src/images/SmashV1.jpg",
       content: (
         <p>
           Sammle XP durch echte Aktionen. Klettere in den Rängen und zeig, was in dir steckt!
