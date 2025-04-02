@@ -8,7 +8,7 @@ const Community = () => {
     {
       title: "Franzi aka Alpaka",
       category: "Suporter",
-      src: "src/images/AlpakaV1.jpg",
+      src: "/images/AlpakaV1.jpg",
       content: (
         <p>
           Unsere Ultra-Family wächst täglich. Finde Gleichgesinnte, die denselben inneren Kampf führen.
@@ -18,7 +18,7 @@ const Community = () => {
     {
       title: "Smash the Brick Commander",
       category: "Character Story Design",
-      src: "src/images/SmashV1.jpg",
+      src: "/images/SmashV1.jpg",
       content: (
         <p>
           Sammle XP durch echte Aktionen. Klettere in den Rängen und zeig, was in dir steckt!
