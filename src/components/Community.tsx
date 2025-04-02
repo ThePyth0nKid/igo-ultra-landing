@@ -26,9 +26,9 @@ const Community = () => {
       ),
     },
     {
-      title: "Discord",
-      category: "Join us",
-      src: "/images/community3.jpg",
+      title: "Tobi The Catdemon",
+      category: "Youngstar",
+      src: "/images/tobiV1.jpg",
       content: (
         <div>
           <p className="mb-4">
