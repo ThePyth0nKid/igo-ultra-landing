@@ -7,7 +7,7 @@ const Community = () => {
   const items = [
     {
       title: "Franzi aka Alpaka",
-      category: "Suporter",
+      category: "Supporter",
       src: "/images/AlpakaV1.jpg",
       content: (
         <p>
@@ -16,7 +16,7 @@ const Community = () => {
       ),
     },
     {
-      title: "Smash the Brick Commander",
+      title: "Smash The Brick Commander",
       category: "Character Story Design",
       src: "/images/SmashV1.jpg",
       content: (
@@ -45,9 +45,9 @@ const Community = () => {
       ),
     },
     {
-      title: "Challenges",
-      category: "Daily Grind",
-      src: "/images/community4.jpg",
+      title: "Vivi La Karma",
+      category: "Supporter",
+      src: "/images/viviV1.jpg",
       content: (
         <p>
           Nimm an täglichen XP-Challenges teil – Push-Ups, Meditation oder 10k Steps. Du entscheidest.
