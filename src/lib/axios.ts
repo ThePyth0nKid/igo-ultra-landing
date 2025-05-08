@@ -9,7 +9,7 @@ function getCookie(name: string): string | null {
 
 // 🌐 Backend Base Setup
 const API = axios.create({
-  baseURL: "https://igoultra-backend-v2-7307073ce46e.herokuapp.com",
+  baseURL: import.meta.env.VITE_API_BASE || "http://localhost:8000",
   withCredentials: true,
 })
 

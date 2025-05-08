@@ -20,6 +20,10 @@ const Navbar = () => {
   const [user, setUser] = useState<User | null>(null)
   const navigate = useNavigate()
 
+  // 📡 API-URL aus .env
+  const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:8000"
+  const discordLoginUrl = `${BACKEND_URL}/accounts/discord/login/?process=login`
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10)
     window.addEventListener("scroll", handleScroll)
@@ -28,7 +32,7 @@ const Navbar = () => {
 
   // 🔍 Check if user is logged in
   useEffect(() => {
-    axios.get("/api/auth/user/")
+    axios.get("/api/v1/auth/me/")
       .then(res => setUser(res.data))
       .catch(() => setUser(null))
   }, [])
@@ -36,7 +40,7 @@ const Navbar = () => {
   // 🚪 Handle Logout
   const handleLogout = async () => {
     try {
-      await axios.post("/api/auth/logout/")
+      await axios.post("/api/v1/auth/logout/")
       setUser(null)
       navigate("/")
     } catch (err) {
@@ -60,7 +64,7 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto grid grid-cols-3 items-center relative">
           <div className="flex items-center">
-            <img src="/logo.png" alt="iGoUltra Logo" className="h-10 w-auto" />
+            <img src="/images/logo.gif" alt="iGoUltra Logo" className="h-10 w-auto" />
           </div>
 
           <div />
@@ -73,7 +77,7 @@ const Navbar = () => {
           >
             {!user ? (
               <Button asChild className={buttonStyle}>
-                <a href="https://igoultra-backend-v2-7307073ce46e.herokuapp.com/accounts/discord/login/?process=login">
+                <a href={discordLoginUrl}>
                   Login with Discord
                 </a>
               </Button>
@@ -111,7 +115,7 @@ const Navbar = () => {
             {!user ? (
               <Button asChild className={buttonStyle}>
                 <a
-                  href="https://igoultra-backend-v2-7307073ce46e.herokuapp.com/accounts/discord/login/?process=login"
+                  href={discordLoginUrl}
                   onClick={() => setMenuOpen(false)}
                 >
                   Login with Discord
