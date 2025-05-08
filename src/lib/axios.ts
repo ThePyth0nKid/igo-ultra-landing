@@ -1,25 +1,27 @@
-import axios from "axios";
+// src/lib/axios.ts
+import axios from "axios"
 
+// 🔐 Helper: Read CSRF cookie
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
+  return match ? decodeURIComponent(match[2]) : null
+}
+
+// 🌐 Backend Base Setup
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL, // uses your .env variable
-});
+  baseURL: "https://igoultra-backend-v2-7307073ce46e.herokuapp.com",
+  withCredentials: true,
+})
 
-// Automatically attach token if present, except for public routes
-API.interceptors.request.use((config) => {
-  const publicRoutes = ["/users/register", "/token", "/token/refresh"];
-
-  const isPublic = publicRoutes.some((route) =>
-    config.url?.includes(route)
-  );
-
-  if (!isPublic) {
-    const token = localStorage.getItem("access_token");;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+API.interceptors.request.use(
+  (config) => {
+    const csrfToken = getCookie("csrftoken")
+    if (csrfToken && config.method !== "get") {
+      config.headers["X-CSRFToken"] = csrfToken
     }
-  }
+    return config
+  },
+  (error) => Promise.reject(error)
+)
 
-  return config;
-});
-
-export default API;
+export default API

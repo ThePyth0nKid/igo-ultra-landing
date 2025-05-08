@@ -9,6 +9,7 @@ import Footer from './components/Footer'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import Dashboard from './pages/Dashboard'
+import DiscordCallback from './pages/DiscordCallback'
 
 const App = () => {
   return (
@@ -33,6 +34,7 @@ const App = () => {
         {/* Auth Pages */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/discord/callback" element={<DiscordCallback />} />
 
         {/* 🔥 Ultra Dashboard */}
         <Route path="/dashboard" element={<Dashboard />} />
