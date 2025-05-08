@@ -6,21 +6,27 @@ const DiscordCallback = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Optional: Check if we're already logged in after Discord redirected back
     const fetchUser = async () => {
       try {
-        await axios.get("/api/auth/user/", { withCredentials: true })
-        navigate("/dashboard") // ✅ If session exists, proceed
+        const res = await axios.get("/api/v1/auth/me/", { withCredentials: true })
+        const user = res.data
+
+        // ✅ Check if user has completed profile (ultra_name is set)
+        if (user.ultra_name) {
+          navigate("/dashboard")
+        } else {
+          navigate("/onboarding")
+        }
       } catch (err) {
-        console.error("Discord callback failed or no session:", err)
-        navigate("/login") // ❌ Not authenticated, redirect to login
+        console.error("Failed to verify Discord session:", err)
+        navigate("/login")
       }
     }
 
     fetchUser()
   }, [navigate])
 
-  return <div className="text-white p-10">Logging in with Discord...</div>
+  return <div className="text-white p-10">Verifiziere Discord Login...</div>
 }
 
 export default DiscordCallback

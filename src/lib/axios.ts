@@ -1,15 +1,14 @@
-// src/lib/axios.ts
 import axios from "axios"
 
-// 🔐 Helper: Read CSRF cookie
+// 🔐 Helper to extract CSRF cookie
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"))
   return match ? decodeURIComponent(match[2]) : null
 }
 
-// 🌐 Backend Base Setup
+// 🌐 Axios instance with dynamic baseURL from .env
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE || "http://localhost:8000",
+  baseURL: import.meta.env.VITE_API_BASE,
   withCredentials: true,
 })
 

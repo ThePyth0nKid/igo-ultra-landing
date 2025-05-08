@@ -20,24 +20,25 @@ const Navbar = () => {
   const [user, setUser] = useState<User | null>(null)
   const navigate = useNavigate()
 
-  // 📡 API-URL aus .env
+  // 🌐 Discord login URL from environment
   const BACKEND_URL = import.meta.env.VITE_API_BASE || "http://localhost:8000"
   const discordLoginUrl = `${BACKEND_URL}/accounts/discord/login/?process=login`
 
+  // 📜 Scroll effect for navbar styling
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 10)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // 🔍 Check if user is logged in
+  // 🔍 Fetch user data on mount
   useEffect(() => {
     axios.get("/api/v1/auth/me/")
       .then(res => setUser(res.data))
       .catch(() => setUser(null))
   }, [])
 
-  // 🚪 Handle Logout
+  // 🚪 Logout handler
   const handleLogout = async () => {
     try {
       await axios.post("/api/v1/auth/logout/")
@@ -104,6 +105,7 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
+      {/* Mobile Dropdown Menu */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -114,10 +116,7 @@ const Navbar = () => {
           >
             {!user ? (
               <Button asChild className={buttonStyle}>
-                <a
-                  href={discordLoginUrl}
-                  onClick={() => setMenuOpen(false)}
-                >
+                <a href={discordLoginUrl} onClick={() => setMenuOpen(false)}>
                   Login with Discord
                 </a>
               </Button>

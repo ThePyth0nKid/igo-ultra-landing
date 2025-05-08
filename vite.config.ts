@@ -16,7 +16,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8000', // Local Django Backend
+        target: 'http://localhost:8000', // Local Django backend
         changeOrigin: true,
         secure: false,
       },
