@@ -1,26 +1,28 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import axios from "@/lib/axios"
+// src/pages/Onboarding.tsx
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { authFetch } from "@/lib/api";
 
 const Onboarding = () => {
-  const [ultraName, setUltraName] = useState("")
-  const [loading, setLoading] = useState(false)
-  const navigate = useNavigate()
+  const [ultraName, setUltraName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
 
     try {
-      await axios.patch("/api/v1/auth/me/", {
-        ultra_name: ultraName,
-      })
-      navigate("/dashboard")
+      await authFetch("/api/v1/auth/me/", {
+        method: "PATCH",
+        body: JSON.stringify({ ultra_name: ultraName }),
+      });
+      navigate("/dashboard");
     } catch (err) {
-      console.error("Failed to set ultra_name", err)
-      setLoading(false)
+      console.error("Failed to set ultra_name", err);
+      setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center text-white">
@@ -46,7 +48,7 @@ const Onboarding = () => {
         </button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default Onboarding
+export default Onboarding;

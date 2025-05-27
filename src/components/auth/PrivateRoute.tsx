@@ -1,29 +1,42 @@
-import { useEffect, useState } from "react"
-import { Navigate } from "react-router-dom"
-import axios from "@/lib/axios"
+// src/components/PrivateRoute.tsx
 
-const PrivateRoute = ({ children }: { children: JSX.Element }) => {
-  const [loading, setLoading] = useState(true)
-  const [redirect, setRedirect] = useState<string | null>(null)
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
+import { fetchCurrentUser } from "@/lib/api";
 
-  useEffect(() => {
-    axios.get("/api/v1/auth/me/")
-      .then((res) => {
-        if (!res.data.ultra_name) {
-          setRedirect("/onboarding")
-        }
-      })
-      .catch(() => {
-        setRedirect("/")
-      })
-      .finally(() => setLoading(false))
-  }, [])
-
-  if (loading) return null // or a loading spinner
-
-  if (redirect) return <Navigate to={redirect} />
-
-  return children
+interface PrivateRouteProps {
+  children: JSX.Element;
 }
 
-export default PrivateRoute // ✅ <- this line is important
+const PrivateRoute = ({ children }: PrivateRouteProps) => {
+  const [loading, setLoading] = useState(true);
+  const [redirect, setRedirect] = useState<string | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const user = await fetchCurrentUser();
+        // If ultra_name is not set, send to onboarding
+        if (!user.ultra_name) {
+          setRedirect("/onboarding");
+        }
+      } catch {
+        // Not authenticated, send to login or home
+        setRedirect("/login");
+      } finally {
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  // While checking auth, render nothing (or a spinner)
+  if (loading) return null;
+
+  // If redirect path determined, navigate there
+  if (redirect) return <Navigate to={redirect} replace />;
+
+  // Otherwise render the protected children
+  return children;
+};
+
+export default PrivateRoute;
