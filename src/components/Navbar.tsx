@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
@@ -23,6 +23,7 @@ const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
+  const location = useLocation();   // ← hier importieren
 
   // Scroll-Effekt
   useEffect(() => {
@@ -31,12 +32,12 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Aktuellen User laden
+  // Aktuellen User laden bei jedem Routenwechsel
   useEffect(() => {
     fetchCurrentUser()
       .then(data => setUser(data))
       .catch(() => setUser(null));
-  }, []);
+  }, [location]);  // ← neu: Depend on location
 
   // Logout
   const handleLogout = () => {
