@@ -9,7 +9,7 @@ const LayoutWithNavbar = ({ children }: Props) => {
   return (
     <>
       <Navbar />
-      <div className="pt-20 sm:pt-4 md:pt-24 lg:pt-16">{children}</div>
+      <div className="sm:pt-4 md:pt-24 lg:pt-16">{children}</div>
     </>
   );
 };
