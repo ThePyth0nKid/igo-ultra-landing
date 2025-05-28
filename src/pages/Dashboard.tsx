@@ -66,7 +66,7 @@ const Dashboard = () => {
       </aside>
 
       {/* Main content with padding to the right of fixed sidebar */}
-      <main className="ml-24 w-full p-6 sm:p-10 flex flex-col md:flex-row gap-6">
+      <main class="ml-24 pt-24 w-full p-6 sm:p-10 flex flex-col md:flex-row gap-6">
         {/* Compact Avatar Card */}
         <section className="w-full md:w-1/3 bg-white/5 border border-gray-800 rounded-xl p-4 flex flex-col items-center gap-3 text-center shadow-xl">
           <img

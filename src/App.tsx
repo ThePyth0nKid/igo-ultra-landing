@@ -1,6 +1,5 @@
 import React from "react"
 import { Routes, Route } from "react-router-dom"
-import Navbar from "./components/Navbar"
 import Hero from "./components/Hero"
 import Mission from "./components/Mission"
 import Roadmap from "./components/Roadmap"
@@ -10,24 +9,23 @@ import Dashboard from "./pages/Dashboard"
 import DiscordCallback from "./pages/DiscordCallback"
 import Onboarding from "./pages/Onboarding"
 import PrivateRoute from "./components/auth/PrivateRoute"
+import LayoutWithNavbar from "./components/layout/LayoutWithNavbar"
 
 const App = () => {
   return (
     <div className="bg-black text-white font-sans">
-      <Navbar />
-
       <Routes>
         {/* Public landing page */}
         <Route
           path="/"
           element={
-            <div className="relative">
+            <LayoutWithNavbar>
               <Hero />
               <Mission />
               <Roadmap />
               <Community />
               <Footer />
-            </div>
+            </LayoutWithNavbar>
           }
         />
 
@@ -42,7 +40,9 @@ const App = () => {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <Dashboard />
+              <LayoutWithNavbar>
+                <Dashboard />
+              </LayoutWithNavbar>
             </PrivateRoute>
           }
         />

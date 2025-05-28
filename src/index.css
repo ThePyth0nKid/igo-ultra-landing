@@ -96,3 +96,18 @@ body,
   position: relative;
   height: 100%;
 }
+
+/* ========== CUSTOM UTILITIES ========== */
+@layer utilities {
+  .pt-navbar {
+    padding-top: 5rem; /* ← anpassen je nach Navbar-Höhe */
+  }
+
+  .ml-sidebar {
+    margin-left: 6rem; /* ← z. B. wenn Sidebar 24 (6rem) breit ist */
+  }
+
+  .avatar-shadow {
+    box-shadow: 0 0 8px var(--color-ring);
+  }
+}
