@@ -26,7 +26,7 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="text-5xl md:text-7xl font-ultra text-ultra-red leading-tight"
         >
-          EIN PORTAL. VIER PFADEN.<br /> DEIN ULTRA-WEG BEGINNT JETZT.
+          EIN PORTAL. VIER PFADE.<br /> DEIN ULTRA-WEG BEGINNT JETZT.
         </motion.h1>
 
         <motion.p
