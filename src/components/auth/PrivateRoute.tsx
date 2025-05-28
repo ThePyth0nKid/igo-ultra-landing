@@ -22,7 +22,7 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
         }
       } catch {
         // Not authenticated, send to login or home
-        setRedirect("/login");
+        setRedirect("/");
       } finally {
         setLoading(false);
       }
