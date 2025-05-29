@@ -126,4 +126,7 @@ body,
   .shadow-ultra-glow {
     box-shadow: 0 0 15px #e10600;
   }
+  .animate-pulse-slow {
+    animation: pulse 4s ease-in-out infinite;
+  }
 }
