@@ -86,7 +86,8 @@ const UltraPathsSection = () => {
         Wähle deinen Pfad – <strong>Körper, Geist, Seele oder Spielwelt</strong> – und entwickle dein digitales Alter Ego.  
         Mit jeder Challenge steigst du im Level auf und kämpfst gemeinsam mit der Community gegen deine inneren Dämonen.  
         <br /><br />
-        Kein Plan. Keine Theorie. Reale Veränderung durch Training, Lernen und Mindset.  
+        Reale Veränderung durch Training, Lernen und Mindset. Spaß und Motivation durch Gamification und Community.
+        <br /><br />  
         <strong>Willkommen bei IGOULTRA.</strong> Es beginnt in dir.
       </motion.p>
 

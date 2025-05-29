@@ -21,7 +21,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
         setAuth(true);
       } catch {
         // Not authenticated → redirect to login or home
-        navigate("/login");
+        navigate("/");
       } finally {
         setLoading(false);
       }
