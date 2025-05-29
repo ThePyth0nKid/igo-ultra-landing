@@ -110,4 +110,20 @@ body,
   .avatar-shadow {
     box-shadow: 0 0 8px var(--color-ring);
   }
+  @keyframes ultra-pulse {
+    0%, 100% {
+      box-shadow: 0 0 12px #e10600;
+    }
+    50% {
+      box-shadow: 0 0 25px #e10600;
+    }
+  }
+
+  .animate-ultra-pulse {
+    animation: ultra-pulse 2s ease-in-out infinite;
+  }
+
+  .shadow-ultra-glow {
+    box-shadow: 0 0 15px #e10600;
+  }
 }
