@@ -1,7 +1,10 @@
 'use client'
 
-import React, { useEffect, useState } from "react"
+import React from "react"
 import { motion } from "framer-motion"
+import Loader from "@/components/ui/loader"
+import { useLoopingTypingText } from "@/components/ui/useLoopingTypingText"
+import { useVideoReady } from "@/components/ui/useVideoReady"
 
 const ultraMindModules = [
   {
@@ -17,7 +20,7 @@ const ultraMindModules = [
     hashtag: "#CodeYourFuture"
   },
   {
-    title: "🧠 Problemlösen",
+    title: "🧠 Problemlösen & Denken",
     text: "Trainiere dein Denken mit Challenges, Coding-Rätseln und kreativen Aufgaben. Lerne, wie ein System denkt.",
     video: "/videos/problem-solving.mp4",
     hashtag: "#ThinkUltra"
@@ -30,44 +33,41 @@ const ultraMindModules = [
   }
 ]
 
-// Typing Effect Hook mit Loop
-const useLoopingTypingText = (text: string, speed = 60, pause = 2000) => {
-  const [displayed, setDisplayed] = useState("")
-  const [index, setIndex] = useState(0)
-  const [forward, setForward] = useState(true)
+const VideoCard = ({ src }: { src: string }) => {
+  const { ready, handleCanPlay } = useVideoReady()
 
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      if (forward) {
-        setDisplayed(text.slice(0, index + 1))
-        setIndex(i => i + 1)
-        if (index + 1 === text.length) {
-          setForward(false)
-        }
-      } else {
-        setDisplayed(text.slice(0, index - 1))
-        setIndex(i => i - 1)
-        if (index === 0) {
-          setForward(true)
-        }
-      }
-    }, index === text.length || index === 0 ? pause : speed)
-
-    return () => clearTimeout(timeout)
-  }, [index, forward, text, speed, pause])
-
-  return displayed
+  return (
+    <div className="relative w-full h-36 overflow-hidden rounded-md bg-black">
+      {!ready && (
+        <div className="absolute inset-0 flex items-center justify-center z-10 bg-black">
+          <Loader />
+        </div>
+      )}
+      <video
+        src={src}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        onCanPlay={handleCanPlay}
+        className={`w-full h-full object-cover transition-opacity duration-500 ${
+          ready ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
+  )
 }
 
 const UltraMindSection = () => {
-  const typingTitle = useLoopingTypingText("Lerne. Level. Hack die Zukunft.", 60, 2000)
+  const typingTitle = useLoopingTypingText("Lerne. Level. Hack die Zukunft.", 60, 1500)
 
   return (
     <section className="py-28 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-950">
-      {/* Intro Headline */}
+      {/* Headline */}
       <div className="text-center space-y-6 max-w-4xl mx-auto mb-20">
         <motion.h2
-          className="text-5xl font-bold uppercase text-ultra-blue"
+          className="text-5xl font-bold uppercase text-ultra-blue min-h-[4rem] tracking-wide"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
@@ -98,7 +98,7 @@ const UltraMindSection = () => {
         </motion.p>
       </div>
 
-      {/* Grid Cards */}
+      {/* Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-2">
         {ultraMindModules.map((modul, index) => (
           <motion.div
@@ -111,17 +111,7 @@ const UltraMindSection = () => {
           >
             <div className="text-center space-y-3">
               <h3 className="text-lg font-bold text-white">{modul.title}</h3>
-              <div className="w-full h-36 overflow-hidden rounded-md bg-black">
-                <video
-                  src={modul.video}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="none"
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <VideoCard src={modul.video} />
               <p className="text-gray-300 text-sm">{modul.text}</p>
               <span className="text-ultra-blue text-xs italic font-semibold">{modul.hashtag}</span>
             </div>
