@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom"
 import Hero from "./components/Hero"
 import Mission from "./components/Mission"
 import UltraFitSection from "@/components/ultra-paths/UltraFitSection"
+import UltraMindSection from "@/components/ultra-paths/UltraMindSection"
 import Roadmap from "./components/Roadmap"
 import Community from "./components/Community"
 import Footer from "./components/Footer"
@@ -24,6 +25,7 @@ const App = () => {
               <Hero />
               <Mission />
               <UltraFitSection />
+              <UltraMindSection />
               <Roadmap />
               <Community />
               <Footer />
