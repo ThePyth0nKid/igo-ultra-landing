@@ -4,6 +4,7 @@ import Hero from "./components/Hero"
 import Mission from "./components/Mission"
 import UltraFitSection from "@/components/ultra-paths/UltraFitSection"
 import UltraMindSection from "@/components/ultra-paths/UltraMindSection"
+import UltraSpiritSection from "@/components/ultra-paths/UltraSpiritSection"
 import Roadmap from "./components/Roadmap"
 import Community from "./components/Community"
 import Footer from "./components/Footer"
@@ -26,6 +27,7 @@ const App = () => {
               <Mission />
               <UltraFitSection />
               <UltraMindSection />
+              <UltraSpiritSection />
               <Roadmap />
               <Community />
               <Footer />

@@ -1,12 +1,14 @@
 'use client'
 
 import React from "react"
+import { motion } from "framer-motion"
 import {
   CardContainer,
   CardBody,
   CardItem,
 } from "@/components/ui/3d-card"
-import { motion } from "framer-motion"
+import Loader from "@/components/ui/loader"
+import { useVideoReady } from "@/components/ui/useVideoReady"
 
 const ultraFitFacts = [
   {
@@ -34,6 +36,32 @@ const ultraFitFacts = [
     hashtag: "#GrindNeverStops"
   }
 ]
+
+const VideoCard = ({ src }: { src: string }) => {
+  const { ready, handleCanPlay } = useVideoReady()
+
+  return (
+    <div className="relative w-full h-40 mb-4 rounded-md flex items-center justify-center overflow-hidden bg-black">
+      {!ready && (
+        <div className="absolute inset-0 flex items-center justify-center z-10 bg-black">
+          <Loader />
+        </div>
+      )}
+      <video
+        src={src}
+        autoPlay
+        loop
+        muted
+        playsInline
+        preload="auto"
+        onCanPlay={handleCanPlay}
+        className={`h-full object-contain transition-opacity duration-500 ${
+          ready ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
+  )
+}
 
 const UltraFitSection = () => {
   return (
@@ -75,19 +103,9 @@ const UltraFitSection = () => {
                   </h3>
                 </CardItem>
 
-                {/* Video */}
+                {/* Video mit Loader */}
                 <CardItem translateZ={50}>
-                  <div className="w-full h-40 mb-4 rounded-md flex items-center justify-center overflow-hidden bg-black">
-                    <video
-                      src={fact.video}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="none"
-                      className="h-full object-contain"
-                    />
-                  </div>
+                  <VideoCard src={fact.video} />
                 </CardItem>
 
                 {/* Beschreibung */}

@@ -129,4 +129,11 @@ body,
   .animate-pulse-slow {
     animation: pulse 4s ease-in-out infinite;
   }
+  .scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

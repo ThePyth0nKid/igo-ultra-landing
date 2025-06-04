@@ -20,7 +20,7 @@ const ultraMindModules = [
     hashtag: "#CodeYourFuture"
   },
   {
-    title: "🧠 Problemlösen & Denken",
+    title: "🧠 Problemlösen",
     text: "Trainiere dein Denken mit Challenges, Coding-Rätseln und kreativen Aufgaben. Lerne, wie ein System denkt.",
     video: "/videos/problem-solving.mp4",
     hashtag: "#ThinkUltra"
@@ -64,11 +64,23 @@ const UltraMindSection = () => {
 
   return (
     <section className="py-24 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-950">
+      {/* Pulsierendes blaues Glow-Icon */}
+      <div className="flex justify-center mb-6">
+        <motion.img
+          src="/icons/mind-white.svg"
+          alt="UltraMind Icon"
+          className="h-24 sm:h-32 animate-pulse drop-shadow-[0_0_20px_#0ea5e9]"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+        />
+      </div>
+
       {/* Headline */}
-      <div className="text-center space-y-4 max-w-4xl mx-auto mb-12 mt-[-1rem] sm:mt-0">
+      <div className="text-center space-y-4 max-w-4xl mx-auto mb-12">
         <motion.h2
           className="text-4xl sm:text-5xl font-bold uppercase text-ultra-blue tracking-wide font-mono leading-tight"
-          style={{ minHeight: "9rem", width: "100%" }}
+          style={{ minHeight: "9rem" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
@@ -99,7 +111,7 @@ const UltraMindSection = () => {
         </motion.p>
       </div>
 
-      {/* Grid */}
+      {/* Card Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-2">
         {ultraMindModules.map((modul, index) => (
           <motion.div
