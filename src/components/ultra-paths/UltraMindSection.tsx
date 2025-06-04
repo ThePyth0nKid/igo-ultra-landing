@@ -63,11 +63,12 @@ const UltraMindSection = () => {
   const typingTitle = useLoopingTypingText("Lerne. Level. Hack die Zukunft.", 60, 1500)
 
   return (
-    <section className="py-28 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-950">
+    <section className="py-24 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-950">
       {/* Headline */}
-      <div className="text-center space-y-6 max-w-4xl mx-auto mb-20">
+      <div className="text-center space-y-4 max-w-4xl mx-auto mb-12 mt-[-1rem] sm:mt-0">
         <motion.h2
-          className="text-5xl font-bold uppercase text-ultra-blue min-h-[4rem] tracking-wide"
+          className="text-4xl sm:text-5xl font-bold uppercase text-ultra-blue tracking-wide font-mono leading-tight"
+          style={{ minHeight: "9rem", width: "100%" }}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
@@ -98,7 +99,7 @@ const UltraMindSection = () => {
         </motion.p>
       </div>
 
-      {/* Cards */}
+      {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-2">
         {ultraMindModules.map((modul, index) => (
           <motion.div
