@@ -92,38 +92,50 @@ const UltraPathsSection = () => {
       </motion.p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {ultraPaths.map((path) => (
-          <div key={path.id} className="flex flex-col items-center">
-            <CardContainer>
-              <CardBody
-                className="transition-all border border-white/10 bg-zinc-900 text-white rounded-xl p-4 sm:p-5 w-[240px] h-[300px] flex flex-col items-center justify-center shadow-ultra-glow animate-ultra-pulse"
-              >
-                <CardItem translateZ={40} className="w-16 h-16 mb-3">
-                  <img
-                    src={path.image}
-                    alt={path.title}
-                    className="w-full h-full object-contain"
-                  />
-                </CardItem>
+        {ultraPaths.map((path, i) => (
+          <motion.div
+            key={path.id}
+            initial={{ opacity: 0, y: 30, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: i * 0.15, ease: "easeOut" }}
+            className="flex flex-col items-center"
+          >
+            <motion.div
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 200 }}
+            >
+              <CardContainer>
+                <CardBody
+                  className="transition-all border border-white/10 bg-zinc-900 text-white rounded-xl p-4 sm:p-5 w-[240px] h-[300px] flex flex-col items-center justify-center shadow-ultra-glow animate-ultra-pulse"
+                >
+                  <CardItem translateZ={40} className="w-16 h-16 mb-3">
+                    <img
+                      src={path.image}
+                      alt={path.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </CardItem>
 
-                <CardItem translateZ={30} className="text-base font-bold text-ultra-red uppercase">
-                  {path.title}
-                </CardItem>
+                  <CardItem translateZ={30} className="text-base font-bold text-ultra-red uppercase">
+                    {path.title}
+                  </CardItem>
 
-                <CardItem translateZ={20} className="text-xs text-gray-400 mt-1">
-                  {path.description}
-                </CardItem>
+                  <CardItem translateZ={20} className="text-xs text-gray-400 mt-1">
+                    {path.description}
+                  </CardItem>
 
-                <CardItem translateZ={10} className="mt-4">
-                  <button
-                    onClick={() => togglePath(path.id)}
-                    className="text-xs bg-ultra-red text-white px-4 py-1 rounded-full hover:bg-red-700 transition-all"
-                  >
-                    {activePath === path.id ? "SCHLIESSEN" : "ÖFFNEN"}
-                  </button>
-                </CardItem>
-              </CardBody>
-            </CardContainer>
+                  <CardItem translateZ={10} className="mt-4">
+                    <button
+                      onClick={() => togglePath(path.id)}
+                      className="text-xs bg-ultra-red text-white px-4 py-1 rounded-full hover:bg-red-700 transition-all"
+                    >
+                      {activePath === path.id ? "SCHLIESSEN" : "ÖFFNEN"}
+                    </button>
+                  </CardItem>
+                </CardBody>
+              </CardContainer>
+            </motion.div>
 
             <AnimatePresence>
               {activePath === path.id && (
@@ -149,7 +161,7 @@ const UltraPathsSection = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
+          </motion.div>
         ))}
       </div>
     </section>

@@ -17,7 +17,7 @@ const ultraMindModules = [
     hashtag: "#CodeYourFuture"
   },
   {
-    title: "🧠 Problemlösen & Denken",
+    title: "🧠 Problemlösen",
     text: "Trainiere dein Denken mit Challenges, Coding-Rätseln und kreativen Aufgaben. Lerne, wie ein System denkt.",
     video: "/videos/problem-solving.mp4",
     hashtag: "#ThinkUltra"
