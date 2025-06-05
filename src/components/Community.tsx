@@ -16,16 +16,6 @@ const Community = () => {
       ),
     },
     {
-      title: "Smash The Brick Commander",
-      category: "Character Story Design",
-      src: "/images/SmashV1.jpg",
-      content: (
-        <p>
-          Sammle XP durch echte Aktionen. Klettere in den Rängen und zeig, was in dir steckt!
-        </p>
-      ),
-    },
-    {
       title: "Tobi The Catdemon",
       category: "Youngstar",
       src: "/images/tobiV1.jpg",
@@ -54,16 +44,7 @@ const Community = () => {
         </p>
       ),
     },
-    {
-      title: "Create with us",
-      category: "Kreativität",
-      src: "/images/community5.jpg",
-      content: (
-        <p>
-          Bock auf Storytelling, Games oder Design? Wir suchen kreative Köpfe, die mit uns was Großes bauen.
-        </p>
-      ),
-    },
+
   ]
 
   return (
