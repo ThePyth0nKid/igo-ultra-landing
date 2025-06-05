@@ -5,6 +5,8 @@ import Mission from "./components/Mission"
 import UltraFitSection from "@/components/ultra-paths/UltraFitSection"
 import UltraMindSection from "@/components/ultra-paths/UltraMindSection"
 import UltraSpiritSection from "@/components/ultra-paths/UltraSpiritSection"
+import UltraWorldSection from "./components/ultra-paths/UltraWorldSection"
+import UltrascienceSection from "./components/ultra-paths/UltrascienceSection"
 import Roadmap from "./components/Roadmap"
 import Community from "./components/Community"
 import Footer from "./components/Footer"
@@ -28,6 +30,8 @@ const App = () => {
               <UltraFitSection />
               <UltraMindSection />
               <UltraSpiritSection />
+              <UltraWorldSection />
+              <UltrascienceSection />
               <Roadmap />
               <Community />
               <Footer />

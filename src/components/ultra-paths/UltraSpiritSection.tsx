@@ -28,7 +28,7 @@ const UltraSpiritSection = () => {
         <motion.img
           src="/icons/spirit-white.svg"
           alt="UltraSpirit Logo"
-          className="w-24 sm:w-28 md:w-32 h-auto object-contain drop-shadow-[0_0_30px_#7c3aed]"
+          className="h-24 sm:h-32 object-contain drop-shadow-[0_0_30px_#7c3aed]"
           animate={{ scale: [1, 1.1, 1] }}
           transition={{ duration: 2.5, repeat: Infinity }}
         />

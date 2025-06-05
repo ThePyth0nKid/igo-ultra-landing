@@ -136,4 +136,10 @@ body,
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+  .text-ultra-blue { color: #0EA5E9; }
+  .bg-ultra-blue { background-color: #0EA5E9; }
+  .text-ultra-purple { color: #8B5CF6; }
+  .bg-ultra-purple { background-color: #8B5CF6; }
+  .text-ultra-green { color: #10B981; }
+  .bg-ultra-green\/10 { background-color: rgba(16, 185, 129, 0.1); }
 }
