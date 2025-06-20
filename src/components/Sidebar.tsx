@@ -1,40 +1,54 @@
 import React from "react";
-import { Home, BarChart2, Settings, Package, LogOut } from "lucide-react";
 import { logoutUser } from "@/lib/api";
+import FitIcon from "@/components/icons/FitIcon";  // Dein eigenes Icon!
 
-const ICON_SIZE = 28; // Einheitliche Größe
+const ICON_SIZE = 32;
 
 const navItems = [
-  { icon: <Home size={ICON_SIZE} />, label: "Home" },
-  { icon: <BarChart2 size={ICON_SIZE} />, label: "XP" },
-  { icon: <Package size={ICON_SIZE} />, label: "Items" },
-  { icon: <Settings size={ICON_SIZE} />, label: "Settings" },
+  { icon: "fit", label: "UltraFit" },
+  { icon: "/icons/mind-white.svg", label: "UltraMind" },
+  { icon: "/icons/spirit-white.svg", label: "UltraSpirit" },
+  { icon: "/icons/world-white.svg", label: "UltraWorld" },
 ];
 
 const Sidebar = () => {
   return (
-    <aside className="w-20 sm:w-24 fixed top-18 left-0 bottom-0 z-40 bg-black/90 border-r border-gray-800 py-8 flex flex-col justify-between items-center space-y-4">
-      {/* Navigation */}
+    <aside className="w-20 sm:w-24 fixed top-18 left-0 bottom-0 z-40 bg-black/90 border-r border-gray-800 py-8 flex flex-col justify-between items-center">
       <div className="flex flex-col items-center gap-6">
         {navItems.map((item, index) => (
           <button
             key={index}
-            className="flex flex-col items-center gap-1 text-white hover:text-ultra-red transition-all"
+            className="flex flex-col items-center bg-transparent border-none shadow-none focus:outline-none"
           >
-            {item.icon}
-            <span className="text-[11px] leading-tight">{item.label}</span>
+            {item.icon === "fit" ? (
+              <FitIcon />
+            ) : (
+              <img
+                src={item.icon}
+                alt={item.label}
+                width={ICON_SIZE}
+                height={ICON_SIZE}
+                className="transition-transform duration-200 hover:scale-110"
+              />
+            )}
+            <span className="text-[11px] leading-tight mt-1">{item.label}</span>
           </button>
         ))}
       </div>
 
-      {/* Logout */}
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex flex-col items-center">
         <button
           onClick={logoutUser}
-          className="flex flex-col items-center gap-1 text-gray-400 hover:text-red-600 transition-all"
+          className="flex flex-col items-center bg-transparent border-none shadow-none focus:outline-none"
         >
-          <LogOut size={ICON_SIZE} />
-          <span className="text-[11px] leading-tight">Logout</span>
+          <img
+            src="/icons/igu-white.svg"
+            alt="Logout"
+            width={ICON_SIZE}
+            height={ICON_SIZE}
+            className="transition-transform duration-200 hover:scale-110"
+          />
+          <span className="text-[11px] leading-tight mt-1">Logout</span>
         </button>
       </div>
     </aside>

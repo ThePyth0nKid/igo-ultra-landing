@@ -110,14 +110,20 @@ body,
   .avatar-shadow {
     box-shadow: 0 0 8px var(--color-ring);
   }
-  @keyframes ultra-pulse {
-    0%, 100% {
-      box-shadow: 0 0 12px #e10600;
-    }
-    50% {
-      box-shadow: 0 0 25px #e10600;
-    }
+  
+@keyframes ultra-pulse-filter {
+  0%, 100% {
+    filter: drop-shadow(0 0 16px #e10600) drop-shadow(0 0 24px rgba(225, 6, 0, 0.7));
   }
+  50% {
+    filter: drop-shadow(0 0 32px #e10600) drop-shadow(0 0 48px rgba(225, 6, 0, 0.9));
+  }
+}
+
+.ultra-pulse-filter {
+  animation: ultra-pulse-filter 1.5s infinite ease-in-out;
+}
+
 
   .animate-ultra-pulse {
     animation: ultra-pulse 2s ease-in-out infinite;
