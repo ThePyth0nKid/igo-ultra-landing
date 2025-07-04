@@ -10,7 +10,7 @@ const Datenschutz = () => (
     <p className="mb-2">
       Verantwortlich für die Verarbeitung Ihrer personenbezogenen Daten ist:
       <br />
-      <strong>iGoUltra – Nelson Nehles</strong>
+      <strong>iGoUltra – Nelson Mehlis</strong>
       <br />
       Petkusser Hauptstraße 9, 15837 Baruth/Mark
       <br />
