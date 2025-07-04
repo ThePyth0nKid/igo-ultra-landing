@@ -7,7 +7,7 @@ const Impressum = () => (
     <p className="mb-4">Angaben gemäß § 5 TMG</p>
 
     <p className="mb-2">
-      <strong>iGoUltra</strong><br />
+      <strong>IGOULTRA</strong><br />
       Petkusser Hauptstraße 9<br />
       15837 Baruth/Mark<br />
       Deutschland
