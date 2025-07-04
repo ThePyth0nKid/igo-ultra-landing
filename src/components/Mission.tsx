@@ -71,7 +71,7 @@ const UltraPathsSection = () => {
   }
 
   return (
-    <section className="py-24 px-4 sm:px-6 max-w-6xl mx-auto text-center space-y-12">
+    <section id="mission" className="py-24 px-4 sm:px-6 max-w-6xl mx-auto text-center space-y-12">
       <h2 className="text-4xl font-bold text-ultra-red uppercase">Was ist IGOULTRA?</h2>
 
       <motion.p

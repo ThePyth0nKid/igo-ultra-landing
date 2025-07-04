@@ -63,7 +63,7 @@ const UltraMindSection = () => {
   const typingTitle = useLoopingTypingText("Lerne. Level. Hack die Zukunft.", 60, 1500)
 
   return (
-    <section className="py-24 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-950">
+    <section id="mind" className="py-24 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-950">
       {/* Pulsierendes blaues Glow-Icon */}
       <div className="flex justify-center mb-6">
         <motion.img

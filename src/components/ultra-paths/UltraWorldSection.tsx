@@ -54,7 +54,7 @@ const UltraWorldSection: React.FC = () => {
   }, [isPaused])
 
   return (
-    <section className="py-28 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-900 text-white relative">
+    <section id="world" className="py-28 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-900 text-white relative">
       {/* Pulsierendes World-Logo */}
       <div className="flex justify-center mb-8">
         {/* Achte darauf, dass /icons/world-wide.svg tatsächlich existiert */}

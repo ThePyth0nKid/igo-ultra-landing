@@ -21,7 +21,7 @@ const spiritCards = [
 
 const UltraSpiritSection = () => {
   return (
-    <section className="py-28 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-900 text-white relative">
+    <section id="spirit" className="py-28 px-4 sm:px-6 max-w-7xl mx-auto bg-zinc-900 text-white relative">
 
       {/* Glow Logo */}
       <div className="flex justify-center mb-10">

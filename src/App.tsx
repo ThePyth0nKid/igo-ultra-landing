@@ -15,6 +15,9 @@ import DiscordCallback from "./pages/DiscordCallback"
 import Onboarding from "./pages/Onboarding"
 import PrivateRoute from "./components/auth/PrivateRoute"
 import LayoutWithNavbar from "./components/layout/LayoutWithNavbar"
+import Impressum from "./pages/Impressum"
+import Datenschutz from "./pages/Datenschutz"
+import Kontakt from "./pages/Kontakt"
 
 const App = () => {
   return (
@@ -56,6 +59,11 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
+        {/* Impressum, Datenschutz, Kontakt */}
+        <Route path="/impressum" element={<Impressum />} />
+        <Route path="/datenschutz" element={<Datenschutz />} />
+        <Route path="/kontakt" element={<Kontakt />} />
 
         {/* Catch-all fallback route */}
         <Route path="*" element={<div className="p-10">404 – Not Found</div>} />

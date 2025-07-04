@@ -65,7 +65,7 @@ const VideoCard = ({ src }: { src: string }) => {
 
 const UltraFitSection = () => {
   return (
-    <section className="py-28 px-4 sm:px-6 max-w-7xl mx-auto bg-black">
+    <section id="fit" className="py-28 px-4 sm:px-6 max-w-7xl mx-auto bg-black">
 
       {/* Pulsierendes rotes Icon */}
       <div className="flex justify-center mb-6">

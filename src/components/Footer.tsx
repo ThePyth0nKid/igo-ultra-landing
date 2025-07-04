@@ -30,10 +30,11 @@ const Footer = () => {
         {/* NAVIGATION */}
         <div className="flex flex-col gap-2 text-center md:text-left">
           <h4 className="font-semibold text-sm mb-2">Navigation</h4>
-          <a href="/#mission" className="text-white hover:text-gray-400 transition">Unsere Mission</a>
-          <a href="/#pfade" className="text-white hover:text-gray-400 transition">Deine Pfade</a>
-          <a href="/leaderboard" className="text-white hover:text-gray-400 transition">Leaderboard</a>
-          <a href="/grindgame" className="text-white hover:text-gray-400 transition">The Grind Game</a>
+          <a href="/#mission" className="text-white hover:text-gray-400 transition">Was ist IGOULTRA?</a>
+          <a href="/#fit" className="text-white hover:text-gray-400 transition">UltraFit</a>
+          <a href="/#mind" className="text-white hover:text-gray-400 transition">UltraMind</a>
+          <a href="/#spirit" className="text-white hover:text-gray-400 transition">UltraSpirit</a>
+          <a href="/#world" className="text-white hover:text-gray-400 transition">UltraWorld</a>
         </div>
 
         {/* SUPPORT & RECHT */}
