@@ -15,7 +15,7 @@ const Kontakt = () => (
       <div className="space-y-6 text-gray-300 leading-relaxed">
         <p>
           Es begann mit einer Vision: Eine Community zu schaffen, die Menschen dabei hilft, 
-          ihre Grenzen zu sprengen und ihr volles Potenzial zu entfalten. IGO Ultra wurde 
+          ihre Grenzen zu sprengen und ihr volles Potenzial zu entfalten. IGOULTRA wurde 
           aus der Überzeugung geboren, dass jeder Mensch das Zeug dazu hat, außergewöhnlich 
           zu werden.
         </p>
