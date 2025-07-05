@@ -18,6 +18,7 @@ import LayoutWithNavbar from "./components/layout/LayoutWithNavbar"
 import Impressum from "./pages/Impressum"
 import Datenschutz from "./pages/Datenschutz"
 import Kontakt from "./pages/Kontakt"
+import Leaderboard from "./pages/Leaderboard"
 
 const App = () => {
   return (
@@ -55,6 +56,18 @@ const App = () => {
             <PrivateRoute>
               <LayoutWithNavbar>
                 <Dashboard />
+              </LayoutWithNavbar>
+            </PrivateRoute>
+          }
+        />
+
+        {/* Leaderboard für eingeloggte User */}
+        <Route
+          path="/leaderboard"
+          element={
+            <PrivateRoute>
+              <LayoutWithNavbar>
+                <Leaderboard />
               </LayoutWithNavbar>
             </PrivateRoute>
           }

@@ -121,6 +121,15 @@ const Navbar = () => {
                     <span className="ml-2 text-ultra-red">Lv. {user.level}</span>
                   )}
                 </span>
+                <button
+                  onClick={() => {
+                    navigate("/leaderboard");
+                    setMenuOpen(false);
+                  }}
+                  className="w-full py-2 px-4 rounded-lg bg-white/10 hover:bg-ultra-red/20 text-ultra-red font-bold text-lg transition-all border-2 border-ultra-red mb-2"
+                >
+                  Leaderboard
+                </button>
                 <Button
                   onClick={() => {
                     handleLogout();
