@@ -16,6 +16,7 @@ type User = {
   xp?: number;
   rank?: number;
   avatar_url?: string;
+  missing_onboarding_fields?: string[];
 };
 
 const Navbar = () => {
@@ -70,7 +71,7 @@ const Navbar = () => {
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
           >
-            {!user ? (
+            {!user || (user.missing_onboarding_fields && user.missing_onboarding_fields.length > 0) ? (
               <Button onClick={redirectToDiscordLogin} className={buttonStyle}>
                 Login with Discord
               </Button>
@@ -103,7 +104,7 @@ const Navbar = () => {
             exit={{ y: -100, opacity: 0 }}
             className="fixed top-16 left-0 w-full bg-black/95 z-40 px-6 py-8 flex flex-col items-center gap-6 text-white text-xl backdrop-blur"
           >
-            {!user ? (
+            {!user || (user.missing_onboarding_fields && user.missing_onboarding_fields.length > 0) ? (
               <Button
                 onClick={() => {
                   redirectToDiscordLogin();

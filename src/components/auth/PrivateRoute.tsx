@@ -1,11 +1,11 @@
 // src/components/PrivateRoute.tsx
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { fetchCurrentUser } from "@/lib/api";
 
 interface PrivateRouteProps {
-  children: JSX.Element;
+  children: React.ReactNode;
 }
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
@@ -16,8 +16,8 @@ const PrivateRoute = ({ children }: PrivateRouteProps) => {
     (async () => {
       try {
         const user = await fetchCurrentUser();
-        // If ultra_name is not set, send to onboarding
-        if (!user.ultra_name) {
+        // Weiterleitung, wenn Onboarding noch nicht abgeschlossen
+        if (user.missing_onboarding_fields && user.missing_onboarding_fields.length > 0) {
           setRedirect("/onboarding");
         }
       } catch {

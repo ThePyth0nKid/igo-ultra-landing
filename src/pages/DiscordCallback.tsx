@@ -28,7 +28,11 @@ const DiscordCallback = () => {
         const user = await fetchCurrentUser();
 
         // 3) Redirect based on profile
-        navigate(user.ultra_name ? "/dashboard" : "/onboarding");
+        if (user.missing_onboarding_fields && user.missing_onboarding_fields.length > 0) {
+          navigate("/onboarding");
+        } else {
+          navigate("/dashboard");
+        }
       } catch (err) {
         console.error("Discord login failed:", err);
         navigate("/login");
