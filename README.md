@@ -152,3 +152,22 @@ Join the [iGoUltra Discord](https://discord.gg/6QT6sHxSFJ)
 → Setz dir ein Ziel. Kämpfe. Level up in real life.
 
 **AHHU.** 🥷
+
+---
+
+## 🆕 Neu: Globale Navigation & UX-Verbesserungen
+
+- Die Navbar enthält jetzt ein Burger-Menü, das auf allen Bildschirmgrößen sichtbar ist.
+- Im ausgeklappten Menü gibt es immer sichtbare Links zu allen Hauptbereichen der Landingpage:
+  - UltraFit (#fit)
+  - UltraMind (#mind)
+  - UltraSpirit (#spirit)
+  - UltraWorld (#world)
+  - Ultrascience (#ultrascience)
+  - Roadmap (#roadmap)
+  - Community (#community)
+- Diese Links scrollen direkt zu den jeweiligen Sections auf der Landingpage (egal ob eingeloggt oder nicht).
+- Das Menü schließt automatisch, wenn man außerhalb klickt oder einen Link auswählt.
+- In der Navbar wird (sofern vorhanden) der Ultra-Name des Users angezeigt, nicht mehr der Username.
+
+---
