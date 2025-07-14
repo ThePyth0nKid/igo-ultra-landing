@@ -100,24 +100,46 @@ const Navbar = () => {
           >
             {/* Ultra-Section Navigation */}
             <div className="flex flex-col gap-2 w-full mb-4">
-              {[
-                { label: "UltraFit", href: "#fit" },
-                { label: "UltraMind", href: "#mind" },
-                { label: "UltraSpirit", href: "#spirit" },
-                { label: "UltraWorld", href: "#world" },
-                { label: "Ultrascience", href: "#ultrascience" },
-                { label: "Roadmap", href: "#roadmap" },
-                { label: "Community", href: "#community" },
-              ].map(({ label, href }) => (
-                <a
-                  key={label}
-                  href={href}
-                  onClick={() => setMenuOpen(false)}
-                  className="block w-full text-left px-4 py-2 rounded-lg hover:bg-ultra-red/20 text-base font-ultra tracking-wide border border-transparent hover:border-ultra-red transition-all"
-                >
-                  {label}
-                </a>
-              ))}
+              {location.pathname === "/" ? (
+                // Landingpage Navigation - Anker-Links zu Sections
+                [
+                  { label: "UltraFit", hash: "#fit" },
+                  { label: "UltraMind", hash: "#mind" },
+                  { label: "UltraSpirit", hash: "#spirit" },
+                  { label: "UltraWorld", hash: "#world" },
+                  { label: "Ultrascience", hash: "#ultrascience" },
+                  { label: "Roadmap", hash: "#roadmap" },
+                  { label: "Community", hash: "#community" },
+                ].map(({ label, hash }) => (
+                  <a
+                    key={label}
+                    href={hash}
+                    onClick={() => setMenuOpen(false)}
+                    className="block w-full text-left px-4 py-2 rounded-lg hover:bg-ultra-red/20 text-base font-ultra tracking-wide border border-transparent hover:border-ultra-red transition-all"
+                  >
+                    {label}
+                  </a>
+                ))
+              ) : (
+                // Dashboard/Other Pages Navigation - Coming Soon Links
+                [
+                  { label: "UltraFit", section: "UltraFit" },
+                  { label: "UltraMind", section: "UltraMind" },
+                  { label: "UltraSpirit", section: "UltraSpirit" },
+                  { label: "UltraWorld", section: "UltraWorld" },
+                ].map(({ label, section }) => (
+                  <button
+                    key={label}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      navigate(`/coming-soon?section=${section}`);
+                    }}
+                    className="block w-full text-left px-4 py-2 rounded-lg hover:bg-ultra-red/20 text-base font-ultra tracking-wide border border-transparent hover:border-ultra-red transition-all"
+                  >
+                    {label}
+                  </button>
+                ))
+              )}
             </div>
             {/* Auth/Onboarding-abhängige Buttons */}
             {!user || (user.missing_onboarding_fields && user.missing_onboarding_fields.length > 0) ? (
