@@ -2,6 +2,20 @@ import React, { useEffect, useState } from "react";
 import { fetchCurrentUser } from "@/lib/api";
 import LayoutWithSidebar from "@/components/layout/LayoutWithSidebar";
 import LayoutWithBottomNav from "@/components/layout/LayoutWithBottomNav";
+import { API_BASE } from '@/lib/api';
+
+// Zusätzliche Typen für Fraktion und Herkunft
+interface Faction {
+  id: number;
+  name: string;
+  style: string;
+  icon: string;
+}
+interface Origin {
+  id: number;
+  name: string;
+  type: string;
+}
 
 type User = {
   id: number;
@@ -9,8 +23,12 @@ type User = {
   ultra_name?: string;
   level?: number;
   xp?: number;
-  rank?: number;
+  rank?: string;
   avatar_url?: string;
+  avatar?: string; // relativer Pfad als Fallback
+  bio?: string;
+  faction?: Faction;
+  origin?: Origin;
 };
 
 const Dashboard = () => {
@@ -44,46 +62,55 @@ const Dashboard = () => {
     );
   }
 
+  // Avatar-URL-Logik: absolute URL bevorzugen, sonst relativen Pfad mit API_BASE ergänzen
+  let avatarSrc = "/images/default-avatar.png";
+  if (user.avatar_url) {
+    avatarSrc = user.avatar_url;
+  } else if (user.avatar) {
+    avatarSrc = user.avatar.startsWith('http') ? user.avatar : `${API_BASE}${user.avatar}`;
+  }
+
   const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
 
   return (
     <Layout>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Avatar */}
-        <section className="bg-white/5 border border-gray-800 rounded-xl p-4 text-center shadow-xl">
+      <div className="max-w-3xl mx-auto flex flex-col items-center gap-8 py-10">
+        {/* Avatar und Name */}
+        <div className="flex flex-col items-center gap-3">
           <img
-            src={user.avatar_url || "/images/default-avatar.png"}
+            src={avatarSrc}
             alt="Avatar"
-            className="w-24 h-24 rounded-full border-2 border-ultra-red shadow-md mx-auto"
+            className="w-32 h-32 rounded-full border-4 border-ultra-red shadow-lg object-cover"
           />
-          <h2 className="text-xl font-ultra text-ultra-red mt-4">
+          <h2 className="text-3xl font-ultra text-ultra-red mt-2">
             {user.ultra_name || user.username}
           </h2>
-          <p className="text-xs text-gray-400">ID: {user.id}</p>
-          <p className="text-sm text-gray-300">
-            Lv. <span className="text-ultra-red">{user.level ?? 0}</span>
-          </p>
-          <p className="text-sm text-gray-300">XP: {user.xp ?? 0}</p>
-          <p className="text-sm text-gray-300">
-            Rang: {user.rank ?? "Unranked"}
-          </p>
-        </section>
+          <span className="text-gray-400 text-sm">@{user.username}</span>
+        </div>
 
-        {/* Skillpunkte + Inventar */}
-        <section className="md:col-span-2 flex flex-col gap-6">
-          <div className="bg-white/5 border border-gray-800 rounded-xl p-4 shadow-lg">
-            <h3 className="text-lg font-ultra text-ultra-red mb-2">🎯 Skillpunkte</h3>
-            <p className="text-gray-300 text-sm">
-              Coming soon: Deine Fähigkeiten & Spezialisierungen.
+        {/* User-Infos */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white/5 border border-gray-800 rounded-xl p-4 shadow-xl flex flex-col gap-2">
+            <h3 className="text-lg font-bold text-ultra-red mb-2">🧑‍🚀 Ultra-Profil</h3>
+            <ul className="text-gray-200 text-sm space-y-1">
+              <li><span className="font-semibold text-white">Level:</span> {user.level ?? 0}</li>
+              <li><span className="font-semibold text-white">XP:</span> {user.xp ?? 0}</li>
+              <li><span className="font-semibold text-white">Rang:</span> {user.rank ?? "Unranked"}</li>
+              {user.faction && (
+                <li><span className="font-semibold text-white">Fraktion:</span> {user.faction.name}</li>
+              )}
+              {user.origin && (
+                <li><span className="font-semibold text-white">Herkunft:</span> {user.origin.name} ({user.origin.type})</li>
+              )}
+            </ul>
+          </div>
+          <div className="bg-white/5 border border-gray-800 rounded-xl p-4 shadow-xl flex flex-col gap-2">
+            <h3 className="text-lg font-bold text-ultra-red mb-2">📝 Bio</h3>
+            <p className="text-gray-200 text-sm whitespace-pre-line min-h-[60px]">
+              {user.bio || <span className="italic text-gray-500">Keine Bio hinterlegt.</span>}
             </p>
           </div>
-          <div className="bg-white/5 border border-gray-800 rounded-xl p-4 shadow-lg">
-            <h3 className="text-lg font-ultra text-ultra-red mb-2">🎒 Inventar</h3>
-            <p className="text-gray-300 text-sm">
-              Hier wird später deine Ausrüstung & XP-Boni angezeigt.
-            </p>
-          </div>
-        </section>
+        </div>
       </div>
     </Layout>
   );

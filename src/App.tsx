@@ -12,7 +12,7 @@ import Community from "./components/Community"
 import Footer from "./components/Footer"
 import Dashboard from "./pages/Dashboard"
 import DiscordCallback from "./pages/DiscordCallback"
-import Onboarding from "./pages/Onboarding"
+import OnboardingContainer from "./pages/Onboarding";
 import PrivateRoute from "./components/auth/PrivateRoute"
 import LayoutWithNavbar from "./components/layout/LayoutWithNavbar"
 import Impressum from "./pages/Impressum"
@@ -47,7 +47,7 @@ const App = () => {
         <Route path="/discord/callback" element={<DiscordCallback />} />
 
         {/* One-time onboarding step for new users */}
-        <Route path="/onboarding" element={<Onboarding />} />
+        <Route path="/onboarding" element={<OnboardingContainer />} />
 
         {/* Protected dashboard for logged-in users with completed profile */}
         <Route

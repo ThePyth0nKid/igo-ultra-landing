@@ -15,13 +15,17 @@ async function authFetch(
     throw new Error("No access token stored");
   }
 
+  // Content-Type nur setzen, wenn KEIN FormData
+  const isFormData = init.body instanceof FormData;
+  const headers = {
+    ...init.headers,
+    ...(isFormData ? {} : { "Content-Type": "application/json" }),
+    Authorization: `Bearer ${access}`,
+  };
+
   let res = await fetch(`${API_BASE}${input}`, {
     ...init,
-    headers: {
-      ...init.headers,
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${access}`,
-    },
+    headers,
   });
 
   if (res.status === 401) {
@@ -48,13 +52,14 @@ async function authFetch(
     localStorage.setItem("refreshToken", newRefresh);
 
     // Retry original request with new access token
+    const retryHeaders = {
+      ...init.headers,
+      ...(isFormData ? {} : { "Content-Type": "application/json" }),
+      Authorization: `Bearer ${newAccess}`,
+    };
     res = await fetch(`${API_BASE}${input}`, {
       ...init,
-      headers: {
-        ...init.headers,
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${newAccess}`,
-      },
+      headers: retryHeaders,
     });
   }
 

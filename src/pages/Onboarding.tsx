@@ -1,54 +1,97 @@
 // src/pages/Onboarding.tsx
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { authFetch } from "@/lib/api";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { authFetch } from '@/lib/api';
 
-const Onboarding = () => {
-  const [ultraName, setUltraName] = useState("");
-  const [loading, setLoading] = useState(false);
+// Step-Komponenten (werden nach und nach implementiert)
+import ChooseUltraNameStep from '../components/onboarding/ChooseUltraNameStep';
+import ChooseFactionStep from '../components/onboarding/ChooseFactionStep';
+import ChooseOriginStep from '../components/onboarding/ChooseOriginStep';
+import WriteBioStep from '../components/onboarding/WriteBioStep';
+import CreateAvatarStep from '../components/onboarding/CreateAvatarStep';
+
+interface Faction {
+  id: number;
+  name: string;
+  style: string;
+  icon: string;
+}
+
+interface Origin {
+  id: number;
+  name: string;
+  type: string;
+}
+
+interface User {
+  id: number;
+  username: string;
+  ultra_name?: string;
+  level: number;
+  xp: number;
+  rank: string;
+  avatar_url?: string;
+  bio?: string;
+  faction?: Faction;
+  origin?: Origin;
+  missing_onboarding_fields: string[];
+}
+
+const OnboardingContainer: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
+  useEffect(() => {
+    fetchUser();
+    // eslint-disable-next-line
+  }, []);
 
+  const fetchUser = async () => {
+    setLoading(true);
+    setError(null);
     try {
-      await authFetch("/api/v1/auth/me/", {
-        method: "PATCH",
-        body: JSON.stringify({ ultra_name: ultraName }),
-      });
-      navigate("/dashboard");
-    } catch (err) {
-      console.error("Failed to set ultra_name", err);
+      const res = await authFetch('/api/v1/auth/me/');
+      if (!res.ok) throw new Error('Fehler beim Laden der Userdaten');
+      const data = await res.json();
+      setUser(data);
+      setLoading(false);
+      // Wenn Onboarding fertig, weiterleiten
+      if (data.missing_onboarding_fields.length === 0) {
+        navigate('/dashboard');
+      }
+    } catch (e: any) {
+      setError(e.message);
       setLoading(false);
     }
   };
 
+  if (loading) {
+    return <div className="flex items-center justify-center h-screen">Lade...</div>;
+  }
+  if (error) {
+    return <div className="flex items-center justify-center h-screen text-red-500">{error}</div>;
+  }
+  if (!user) return null;
+
+  // Bestimme den nächsten fehlenden Step
+  const nextField = user.missing_onboarding_fields[0];
+
+  let StepComponent = null;
+  if (nextField === 'ultra_name') StepComponent = <ChooseUltraNameStep user={user} onSuccess={fetchUser} />;
+  else if (nextField === 'faction') StepComponent = <ChooseFactionStep user={user} onSuccess={fetchUser} />;
+  else if (nextField === 'origin') StepComponent = <ChooseOriginStep user={user} onSuccess={fetchUser} />;
+  else if (nextField === 'bio') StepComponent = <WriteBioStep user={user} onSuccess={fetchUser} />;
+  else if (nextField === 'avatar_url') StepComponent = <CreateAvatarStep user={user} onSuccess={fetchUser} />;
+
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center text-white">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-zinc-900 p-8 rounded-2xl shadow-lg w-full max-w-md"
-      >
-        <h2 className="text-xl font-bold mb-4">Choose your Ultra Name</h2>
-        <input
-          type="text"
-          value={ultraName}
-          onChange={(e) => setUltraName(e.target.value)}
-          placeholder="e.g. ShadowRunner42"
-          className="w-full px-4 py-2 rounded-lg bg-zinc-800 border border-zinc-700 mb-4"
-          required
-        />
-        <button
-          type="submit"
-          className="bg-ultra-red text-white py-2 px-4 rounded-lg w-full hover:bg-red-700 transition"
-          disabled={loading}
-        >
-          {loading ? "Saving..." : "Continue"}
-        </button>
-      </form>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
+      <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
+        {StepComponent}
+      </div>
     </div>
   );
 };
 
-export default Onboarding;
+export default OnboardingContainer;

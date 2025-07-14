@@ -1,108 +1,144 @@
 # iGoUltra – Frontend
 
-**iGoUltra** is an immersive frontend experience built with **Vite**, **React**, **Tailwind CSS v4**, and **shadcn/ui**, designed for a new kind of digital-physical XP game.
+**iGoUltra** ist ein immersives XP-Game-Frontend, gebaut mit **Vite**, **React**, **Tailwind CSS v4** und **shadcn/ui**. Es bietet einen dynamischen, API-first Onboarding-Prozess, Discord-Login, Fraktions- und Herkunftswahl, Bio, Avatar-Upload und ein modernes Dashboard.
 
 ---
 
 ## 🧱 Tech Stack
 
-- [Vite](https://vitejs.dev/) – blazing-fast frontend tooling  
-- [React 18](https://reactjs.org/) – UI library  
-- [Tailwind CSS v4](https://tailwindcss.com/) – utility-first CSS  
-- [shadcn/ui](https://ui.shadcn.com/) – beautiful UI components  
-- [Framer Motion](https://www.framer.com/motion/) – animations  
-- [Lucide Icons](https://lucide.dev/) – icon system  
-- Custom 3D Cards, Parallax & Scroll Effects
+- [Vite](https://vitejs.dev/) – ultraschnelles Frontend-Tooling
+- [React 18](https://reactjs.org/) – UI Library
+- [Tailwind CSS v4](https://tailwindcss.com/) – Utility-First CSS
+- [shadcn/ui](https://ui.shadcn.com/) – UI-Komponenten
+- [Framer Motion](https://www.framer.com/motion/) – Animationen
+- [Lucide Icons](https://lucide.dev/) – Icon-System
+- Eigene 3D Cards, Parallax & Scroll-Effekte
 
 ---
 
-## 🧪 Local Development
+## 🚦 Features & Flow
+
+### **1. Discord-Login & Authentifizierung**
+- Login via Discord OAuth2
+- JWT-Token-Handling (Access/Refresh im localStorage)
+- Automatisches Token-Refresh
+- Geschützte Routen (Dashboard, Leaderboard, Onboarding)
+
+### **2. Dynamischer Onboarding-Flow**
+- Nach Login: GET `/api/v1/auth/me/` prüft `missing_onboarding_fields`
+- Schrittweise Abfrage: Ultraname → Fraktion → Herkunft (inkl. eigene Herkunft anlegen) → Bio → Avatar
+- Nach jedem Schritt PATCH an `/api/v1/auth/me/` (außer Avatar)
+- Nach jedem Schritt erneutes Prüfen, was noch fehlt
+- Abschluss: Weiterleitung zum Dashboard
+
+### **3. Avatar-Upload**
+- Eigener Endpunkt: `POST /api/v1/auth/avatar-upload/` (FormData, Feld: `avatar`)
+- Nach Upload: Userdaten neu laden, Avatarbild wird sofort angezeigt
+- Fallback auf Default-Avatar, falls kein Bild vorhanden
+
+### **4. Dashboard**
+- Zeigt alle wichtigen Userdaten: Avatar, Ultraname, Username, Level, XP, Rang, Fraktion, Herkunft, Bio
+- Responsive, modernes Layout mit Tailwind 4
+
+### **5. API-Integration**
+- Alle API-Requests laufen über `authFetch` (setzt automatisch den Token und Content-Type)
+- PATCH/POST für Textfelder: JSON, für Avatar: FormData
+- Fehlerbehandlung und automatische Weiterleitung bei fehlender Authentifizierung
+
+---
+
+## 🧪 Lokale Entwicklung
 
 ```bash
-# install dependencies
+# Abhängigkeiten installieren
 npm install
 
-# start dev server
+# Dev-Server starten
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
+Frontend läuft auf [http://localhost:5173](http://localhost:5173)
 
 ---
 
 ## 🔐 Environment Variables
 
-Create a `.env` file in the project root:
-
+`.env` im Projekt-Root:
 ```env
-VITE_API_URL=https://your-backend-url.com
+VITE_API_URL=http://localhost:8000
 ```
 
-> This URL is used to connect the frontend to the Django backend.
-
 ---
 
-## 🚀 Deployment
-
-This project is deployed via [Vercel](https://vercel.com)
-
-- `main` branch → production  
-- `dev` branch → preview deployments (safe testing)
-
-Every push triggers a new deployment automatically.
-
----
-
-## 🌍 Project Structure
+## 🌍 Projektstruktur
 
 ```
 src/
-├── components/         → UI components (Navbar, XP display, Cards, etc.)
-├── lib/                → API calls and shared functions
-├── pages/              → Main page views (if routing is used)
-├── styles/             → Tailwind config & global styles
-├── App.tsx             → Root component
+├── components/         → UI-Komponenten (Onboarding, Navbar, etc.)
+├── lib/                → API-Utils, Auth-Handling
+├── pages/              → Hauptseiten (Dashboard, Onboarding, etc.)
+├── assets/             → Bilder, Videos
+├── App.tsx             → Root-Komponente
 ```
 
 ---
 
-## 🌐 Backend Connection
+## 🌐 Backend-Anbindung & API-Endpunkte
 
-The frontend communicates with the **Django REST API** using `fetch()` with the URL from `VITE_API_URL`.
-
-Make sure your Django backend:
-
-- Has CORS enabled for Vercel + localhost  
-- Exposes routes like `/api/xp/` that return JSON
-
----
-
-## 🧭 Current Features
-
-- Ultra-styled responsive layout  
-- Animated 3D Mission Card  
-- XP Progress Bar  
-- Glow Buttons & Navbar with Scroll Detection  
-- Parallax / ScrollReveal Elements  
-- Tailwind CSS v4 Custom Theme Integration
+- **Userdaten:**
+  - `GET /api/v1/auth/me/` → Userobjekt inkl. `missing_onboarding_fields`
+  - `PATCH /api/v1/auth/me/` → Felder wie `ultra_name`, `bio`, `faction_id`, `origin_id`
+- **Fraktionen:**
+  - `GET /api/v1/factions/`
+- **Herkünfte:**
+  - `GET /api/v1/origins/`
+  - `POST /api/v1/origins/` (eigene Herkunft anlegen)
+- **Avatar-Upload:**
+  - `POST /api/v1/auth/avatar-upload/` (FormData, Feld: `avatar`)
 
 ---
 
-## 🧠 To Do
+## 🛠️ Stolpersteine & Best Practices
 
-- [ ] Connect to real XP API (DRF)  
-- [ ] Dynamic level system  
-- [ ] Leaderboard & user stats  
-- [ ] User authentication (JWT or Session)  
-- [ ] Weekly/Monthly Grind Rewards  
-- [ ] Full XP Game Loop  
-- [ ] Integrate with sensors / AR (future)
+### **1. Authentifizierung & Token-Handling**
+- Immer `authFetch` verwenden, damit der Token im Header landet
+- Nach Login: Access/Refresh-Token im localStorage speichern
+- Bei 401: Automatisches Token-Refresh, sonst Logout
+
+### **2. PATCH vs. FormData**
+- Für Textfelder (Ultraname, Bio, etc.): PATCH mit JSON (`Content-Type: application/json`)
+- Für Avatar: POST mit FormData (kein Content-Type setzen, Browser übernimmt das)
+- In `authFetch` Content-Type nur setzen, wenn KEIN FormData gesendet wird
+
+### **3. Medien-Handling im Backend**
+- Django muss im Development `/media/`-URLs ausliefern:
+  ```python
+  from django.conf import settings
+  from django.conf.urls.static import static
+  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+  ```
+- Nach Upload: Datei muss im `media/`-Ordner liegen, sonst 404!
+- Im Frontend immer die vom Backend gelieferte URL verwenden (`avatar_url` oder `avatar`)
+
+### **4. Typische Fehler & Lösungen**
+- **401 Unauthorized:** Token fehlt/abgelaufen → Login-Flow prüfen
+- **500 Server Error:** PATCH mit falschem Content-Type → JSON vs. FormData beachten
+- **404 beim Avatar:** Datei fehlt im Backend oder MEDIA-URL nicht ausgeliefert
+- **Onboarding bleibt hängen:** Backend gibt `missing_onboarding_fields` nicht korrekt zurück
+
+---
+
+## 🧠 Lessons Learned
+- API-first Onboarding ist nur robust, wenn das Backend nach jedem PATCH/Upload den Userstatus korrekt zurückgibt
+- Avatar-Uploads brauchen eigene Endpunkte und sauberes Medien-Handling
+- Frontend muss immer die vom Backend gelieferte URL nutzen, nie selbst Pfade bauen
+- Fehlerquellen sind meist Backend-Konfiguration oder falsche Content-Types
 
 ---
 
 ## 👤 Author
 
-Developed with purpose by:
+Developed with ❤️ by:
 
 **Nelson Mehlis**  
 Founder & Visionary of [iGoUltra](https://igoultra.org)
@@ -111,9 +147,8 @@ Founder & Visionary of [iGoUltra](https://igoultra.org)
 
 ## 💬 Community
 
-Join the [iGoUltra Discord](https://discord.gg/6QT6sHxSFJ)  
-→ Become part of the **Ultra Tribe**  
-→ Set your goal. Fight your demons.  
-→ **Level up in real life.**
+Join the [iGoUltra Discord](https://discord.gg/6QT6sHxSFJ)
+→ Werde Teil der **Ultra Tribe**
+→ Setz dir ein Ziel. Kämpfe. Level up in real life.
 
 **AHHU.** 🥷
