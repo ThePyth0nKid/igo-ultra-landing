@@ -1,7 +1,7 @@
 // src/components/Navbar.tsx
 'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,6 +25,7 @@ const Navbar = () => {
   const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
   const location = useLocation();   // ← hier importieren
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
 
   // Scroll-Effekt
   useEffect(() => {
@@ -39,6 +40,21 @@ const Navbar = () => {
       .then(data => setUser(data))
       .catch(() => setUser(null));
   }, [location]);  // ← neu: Depend on location
+
+  // Close burger menu on outside click
+  useEffect(() => {
+    if (!menuOpen) return;
+    function handleClick(event: MouseEvent) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [menuOpen]);
 
   // Logout
   const handleLogout = () => {
@@ -65,31 +81,7 @@ const Navbar = () => {
         <div className="max-w-7xl mx-auto grid grid-cols-3 items-center relative">
           <img src="/images/logo.gif" alt="Logo" className="h-10 w-auto" />
           <div />
-          <motion.div
-            className="hidden md:flex justify-end items-center gap-6 text-sm text-white font-medium"
-            initial={{ x: -80, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
-            {!user || (user.missing_onboarding_fields && user.missing_onboarding_fields.length > 0) ? (
-              <Button onClick={redirectToDiscordLogin} className={buttonStyle}>
-                Login with Discord
-              </Button>
-            ) : (
-              <>
-                <span className="text-white text-sm font-light mr-2">
-                  Hi, <span className="font-semibold">{user.username}</span>
-                  {user.level !== undefined && (
-                    <span className="ml-2 text-ultra-red">Lv. {user.level}</span>
-                  )}
-                </span>
-                <Button onClick={handleLogout} className={buttonStyle}>
-                  Logout
-                </Button>
-              </>
-            )}
-          </motion.div>
-          <div className="md:hidden absolute right-6 top-1/2 -translate-y-1/2">
+          <div className="absolute right-6 top-1/2 -translate-y-1/2">
             <button onClick={() => setMenuOpen(!menuOpen)} className="text-white">
               {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -99,11 +91,35 @@ const Navbar = () => {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            initial={{ y: -100, opacity: 0 }}
+            ref={dropdownRef}
+            initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -100, opacity: 0 }}
-            className="fixed top-16 left-0 w-full bg-black/95 z-40 px-6 py-8 flex flex-col items-center gap-6 text-white text-xl backdrop-blur"
+            exit={{ y: -20, opacity: 0 }}
+            className="fixed top-16 right-6 w-72 max-w-full bg-black/95 z-50 px-6 py-6 flex flex-col items-center gap-6 text-white text-xl backdrop-blur rounded-xl shadow-2xl border border-gray-800"
+            style={{ minWidth: '220px' }}
           >
+            {/* Ultra-Section Navigation */}
+            <div className="flex flex-col gap-2 w-full mb-4">
+              {[
+                { label: "UltraFit", href: "#fit" },
+                { label: "UltraMind", href: "#mind" },
+                { label: "UltraSpirit", href: "#spirit" },
+                { label: "UltraWorld", href: "#world" },
+                { label: "Ultrascience", href: "#ultrascience" },
+                { label: "Roadmap", href: "#roadmap" },
+                { label: "Community", href: "#community" },
+              ].map(({ label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  onClick={() => setMenuOpen(false)}
+                  className="block w-full text-left px-4 py-2 rounded-lg hover:bg-ultra-red/20 text-base font-ultra tracking-wide border border-transparent hover:border-ultra-red transition-all"
+                >
+                  {label}
+                </a>
+              ))}
+            </div>
+            {/* Auth/Onboarding-abhängige Buttons */}
             {!user || (user.missing_onboarding_fields && user.missing_onboarding_fields.length > 0) ? (
               <Button
                 onClick={() => {
@@ -117,7 +133,15 @@ const Navbar = () => {
             ) : (
               <>
                 <span className="text-white text-sm text-center font-light">
-                  Welcome, <span className="font-semibold">{user.username}</span>
+                  {user.ultra_name ? (
+                    <>
+                      Willkommen, <span className="font-semibold">{user.ultra_name}</span>
+                    </>
+                  ) : (
+                    <>
+                      Willkommen, <span className="font-semibold">{user.username}</span>
+                    </>
+                  )}
                   {user.level !== undefined && (
                     <span className="ml-2 text-ultra-red">Lv. {user.level}</span>
                   )}
