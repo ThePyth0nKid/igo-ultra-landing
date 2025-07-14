@@ -19,6 +19,7 @@ import Impressum from "./pages/Impressum"
 import Datenschutz from "./pages/Datenschutz"
 import Kontakt from "./pages/Kontakt"
 import Leaderboard from "./pages/Leaderboard"
+import ComingSoon from './pages/ComingSoon';
 
 const App = () => {
   return (
@@ -72,6 +73,9 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
+        {/* Coming Soon page */}
+        <Route path="/coming-soon" element={<ComingSoon />} />
 
         {/* Impressum, Datenschutz, Kontakt */}
         <Route path="/impressum" element={<Impressum />} />

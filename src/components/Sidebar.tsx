@@ -16,6 +16,17 @@ const navItems = [
 
 const Sidebar = () => {
   const navigate = useNavigate();
+  const handleLogout = () => {
+    logoutUser();
+    navigate("/");
+  };
+  const handleNav = (label: string) => {
+    if (label === "Leaderboard") {
+      navigate("/leaderboard");
+    } else if (["UltraFit", "UltraMind", "UltraSpirit", "UltraWorld"].includes(label)) {
+      navigate(`/coming-soon?section=${label}`);
+    }
+  };
   return (
     <aside className="w-20 sm:w-24 fixed top-18 left-0 bottom-0 z-40 bg-black/90 border-r border-gray-800 py-8 flex flex-col justify-between items-center">
       <div className="flex flex-col items-center gap-6">
@@ -23,7 +34,7 @@ const Sidebar = () => {
           <button
             key={index}
             className="flex flex-col items-center bg-transparent border-none shadow-none focus:outline-none"
-            onClick={() => item.label === "Leaderboard" ? navigate("/leaderboard") : undefined}
+            onClick={() => handleNav(item.label)}
           >
             {item.icon === "fit" ? (
               <FitIcon />
@@ -45,7 +56,7 @@ const Sidebar = () => {
 
       <div className="flex flex-col items-center">
         <button
-          onClick={logoutUser}
+          onClick={handleLogout}
           className="flex flex-col items-center bg-transparent border-none shadow-none focus:outline-none"
         >
           <img
