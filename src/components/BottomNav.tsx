@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ICON_SIZE = 32;
 
@@ -11,12 +12,20 @@ const navItems = [
 ];
 
 const BottomNav = () => {
+  const navigate = useNavigate();
+  const handleNav = (label: string) => {
+    if (["UltraFit", "UltraMind", "UltraSpirit", "UltraWorld"].includes(label)) {
+      navigate(`/coming-soon?section=${label}`);
+    }
+    // IGOULTRA-Button bleibt ohne Navigation
+  };
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 bg-black/90 border-t border-gray-800 py-2 flex justify-around items-center">
       {navItems.map((item, index) => (
         <button
           key={index}
           className="flex flex-col items-center bg-transparent border-none shadow-none focus:outline-none"
+          onClick={() => handleNav(item.label)}
         >
           <img
             src={item.icon}

@@ -171,3 +171,27 @@ Join the [iGoUltra Discord](https://discord.gg/6QT6sHxSFJ)
 - In der Navbar wird (sofern vorhanden) der Ultra-Name des Users angezeigt, nicht mehr der Username.
 
 ---
+
+## 🚀 Neue Features & Bugfixes (Juni 2024)
+
+### Profil bearbeiten & Self-Service
+- **Neue Profilseite:** Über das Burger-Menü ("Profil bearbeiten") gelangst du auf eine eigene Seite, um dein Profil zu verwalten.
+- **Avatar ändern:** Du kannst dein Avatar-Bild jederzeit neu hochladen und speichern. Das Bild wird sofort aktualisiert.
+- **Herkunft ändern:** Du kannst deine Herkunft aus einer Liste wählen oder eine eigene Herkunft anlegen und speichern. (Backend-Limitierung für Wechsel folgt)
+- **Fraktion wechseln:** Du kannst deine Fraktion beliebig oft ändern und speichern.
+- **Konto löschen:** Am Ende der Profilseite gibt es einen "Konto löschen"-Button. Vor dem Löschen erscheint ein Modal zur Bestätigung. Nach Bestätigung wird das Konto per API gelöscht und du wirst ausgeloggt.
+
+### Navigation & UX
+- **Sidebar & BottomNav:** Die Sidebar ist jetzt auf allen relevanten Seiten sichtbar. Auf kleinen Geräten funktioniert die BottomNav für UltraFit, UltraMind, UltraSpirit und UltraWorld wie die Sidebar.
+- **Dashboard-Icon:** In der Sidebar gibt es ein Dashboard-Icon, das immer sichtbar ist, wenn du nicht auf dem Dashboard bist.
+
+### Bugfixes & Lessons Learned
+- **DELETE /api/v1/auth/me/:** Ursprünglich war das Löschen des eigenen Kontos nicht möglich ("Method DELETE not allowed"). Lösung: Backend muss einen eigenen DELETE-Endpoint für den eingeloggten User bereitstellen.
+- **Eigene Herkunft speichern:** Nach dem Anlegen einer eigenen Herkunft wird diese jetzt automatisch gespeichert.
+- **Doppelte Imports:** Linter-Fehler durch doppelte React- und API-Imports wurden behoben.
+- **Button-Styles:** Avatar-Upload-Button und andere Buttons wurden an das dunkle Design angepasst.
+
+### Hinweise für Backend
+- Für das Löschen des eigenen Kontos und Limitierung der Herkunftswechsel sind Backend-Anpassungen nötig (siehe Projekt-Prompts).
+
+---

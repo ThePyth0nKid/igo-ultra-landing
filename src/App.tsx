@@ -20,6 +20,7 @@ import Datenschutz from "./pages/Datenschutz"
 import Kontakt from "./pages/Kontakt"
 import Leaderboard from "./pages/Leaderboard"
 import ComingSoon from './pages/ComingSoon';
+import ProfileEdit from "./pages/ProfileEdit";
 
 const App = () => {
   return (
@@ -69,6 +70,18 @@ const App = () => {
             <PrivateRoute>
               <LayoutWithNavbar>
                 <Leaderboard />
+              </LayoutWithNavbar>
+            </PrivateRoute>
+          }
+        />
+
+        {/* Profil bearbeiten */}
+        <Route
+          path="/profile/edit"
+          element={
+            <PrivateRoute>
+              <LayoutWithNavbar>
+                <ProfileEdit />
               </LayoutWithNavbar>
             </PrivateRoute>
           }
