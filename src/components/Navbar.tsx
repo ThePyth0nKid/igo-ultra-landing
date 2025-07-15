@@ -17,6 +17,7 @@ type User = {
   rank?: number;
   avatar_url?: string;
   missing_onboarding_fields?: string[];
+  is_staff?: boolean; // Added is_staff to the User type
 };
 
 const Navbar = () => {
@@ -158,6 +159,20 @@ const Navbar = () => {
                 ))
               )}
             </div>
+            {/* Admin-Navigation für is_staff */}
+            {user?.is_staff && (
+              <div className="w-full border-t border-gray-700 pt-4 mt-2">
+                <button
+                  onClick={() => {
+                    navigate("/admin-panel");
+                    setMenuOpen(false);
+                  }}
+                  className="block w-full text-left px-4 py-2 rounded-lg bg-ultra-red/10 hover:bg-ultra-red/30 text-ultra-red font-bold text-base font-ultra tracking-wide border border-ultra-red mb-2 transition-all"
+                >
+                  Admin Panel
+                </button>
+              </div>
+            )}
             {/* Auth/Onboarding-abhängige Buttons */}
             {!user || (user.missing_onboarding_fields && user.missing_onboarding_fields.length > 0) ? (
               <Button
