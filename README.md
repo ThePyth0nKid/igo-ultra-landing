@@ -47,6 +47,54 @@
 
 ---
 
+## 👑 User-Admin-Panel (Juli 2024)
+
+### Features
+- Admin-Panel für User-Management (nur für is_staff-User sichtbar)
+- User-Liste mit Suche, Sortierung, Pagination, Details, Löschen, Anlegen
+- User-Detailansicht: Immer editierbar, robustes Speichern, Erfolgsmeldung, Fehler-Handling
+- User-Anlegen: Funktioniert, E-Mail ist optional, robustes State-Handling
+- Routing: `/admin-panel`, `/admin-panel/users/:id`, `/admin-panel/users/create`
+
+### API-Integration
+- **Basis-Endpoint:** `/api/v1/auth/admin/users/`
+- **Methoden:**
+  - `GET /api/v1/auth/admin/users/` (Liste, Suche, Filter, Sortierung, Pagination)
+  - `POST /api/v1/auth/admin/users/` (User anlegen)
+  - `GET /api/v1/auth/admin/users/<id>/` (Detail)
+  - `PATCH /api/v1/auth/admin/users/<id>/` (Bearbeiten)
+  - `DELETE /api/v1/auth/admin/users/<id>/` (Löschen)
+- **Nur für is_staff-User zugänglich (403 sonst)**
+- **JWT-Auth wie im Rest des Projekts**
+
+### Typische Probleme & Lösungen
+- **404 Not Found bei User-API:**
+  - Ursache: Falscher API-Endpoint (z.B. `/api/v1/admin/users/` statt `/api/v1/auth/admin/users/`).
+  - Lösung: Alle API-Calls auf den neuen Pfad umgestellt.
+- **User-Liste bleibt leer, obwohl User existieren:**
+  - Ursache: Backend liefert ein Array statt `{ results: [...] }`.
+  - Lösung: Frontend erkennt jetzt beide Formate.
+- **PATCH (Bearbeiten) gibt 400 Bad Request:**
+  - Ursache: Es wurden zu viele oder falsche Felder (z.B. id, avatar_url) gesendet.
+  - Lösung: Nur erlaubte Felder werden an das Backend geschickt.
+- **Nach Speichern fehlen Felder wie `date_joined` oder `last_login`:**
+  - Ursache: PATCH-Response enthält nicht alle Felder.
+  - Lösung: Nach dem Speichern wird der User erneut per GET geladen.
+- **Felder im Formular nicht editierbar:**
+  - Ursache: Edit-Mode war zu restriktiv oder State-Handling fehlerhaft.
+  - Lösung: Edit-Mode entfernt, Felder sind immer editierbar.
+- **Kein Feedback nach Speichern:**
+  - Lösung: Erfolgsmeldung (grün) und Fehler-Handling (rot) eingebaut, Meldungen verschwinden automatisch.
+
+### Lessons Learned
+- Immer das tatsächliche Backend-Response-Format prüfen (Array vs. Objekt)
+- Nach PATCH nie blind das Response-Objekt als neuen State setzen, sondern ggf. nochmal GET machen
+- Felder im PATCH immer filtern, nie das ganze User-Objekt senden
+- UX: Editierbarkeit und Feedback sind für Admins entscheidend
+- Fehlerquellen sind meist Backend-Serializer, API-Response-Format oder zu viele Felder im PATCH
+
+---
+
 ## 🧪 Lokale Entwicklung
 
 ```bash

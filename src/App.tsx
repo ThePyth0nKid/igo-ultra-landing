@@ -24,6 +24,8 @@ import Leaderboard from "./pages/Leaderboard"
 import ComingSoon from './pages/ComingSoon';
 import ProfileEdit from "./pages/ProfileEdit";
 import AdminPanel from "./pages/AdminPanel";
+import UserDetail from "@/components/admin/UserDetail";
+import UserCreate from "@/components/admin/UserCreate";
 
 const App = () => {
   return (
@@ -99,6 +101,22 @@ const App = () => {
             </PrivateRoute>
           }
         />
+        <Route
+          path="/admin-panel/users/:id"
+          element={
+            <PrivateRoute>
+              <ResponsiveAdminPanelWrapperUserDetail />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin-panel/users/create"
+          element={
+            <PrivateRoute>
+              <ResponsiveAdminPanelWrapperUserCreate />
+            </PrivateRoute>
+          }
+        />
 
         {/* Coming Soon page */}
         <Route path="/coming-soon" element={<ComingSoon />} />
@@ -128,6 +146,40 @@ const ResponsiveAdminPanelWrapper: React.FC = () => {
   return (
     <Layout>
       <AdminPanel />
+    </Layout>
+  );
+};
+
+// Wrapper-Komponente für UserDetail mit Sidebar oder BottomNav
+const ResponsiveAdminPanelWrapperUserDetail: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+  return (
+    <Layout>
+      <UserDetail />
+    </Layout>
+  );
+};
+
+// Wrapper-Komponente für UserCreate mit Sidebar oder BottomNav
+const ResponsiveAdminPanelWrapperUserCreate: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+  return (
+    <Layout>
+      <UserCreate />
     </Layout>
   );
 };
