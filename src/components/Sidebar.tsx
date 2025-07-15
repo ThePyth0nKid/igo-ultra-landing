@@ -1,8 +1,8 @@
-import React from "react";
-import { logoutUser } from "@/lib/api";
+import React, { useEffect, useState } from "react";
+import { logoutUser, fetchCurrentUser } from "@/lib/api";
 import FitIcon from "@/components/icons/FitIcon";  // Dein eigenes Icon!
 import { useNavigate, useLocation } from "react-router-dom";
-import { FaTrophy, FaHome } from "react-icons/fa";
+import { FaTrophy, FaHome, FaTools } from "react-icons/fa";
 
 const ICON_SIZE = 32;
 
@@ -17,6 +17,10 @@ const navItems = [
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [user, setUser] = useState<any>(null);
+  useEffect(() => {
+    fetchCurrentUser().then(setUser).catch(() => setUser(null));
+  }, [location]);
   const handleLogout = () => {
     logoutUser();
     navigate("/");
@@ -64,7 +68,17 @@ const Sidebar = () => {
         ))}
       </div>
 
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-2">
+        {/* Admin-Panel Button nur für is_staff */}
+        {user?.is_staff && (
+          <button
+            onClick={() => navigate("/admin-panel")}
+            className="flex flex-col items-center bg-transparent border-none shadow-none focus:outline-none mb-2"
+          >
+            <FaTools size={ICON_SIZE} className="text-ultra-red transition-transform duration-200 hover:scale-110" />
+            <span className="text-[11px] leading-tight mt-1">Admin</span>
+          </button>
+        )}
         <button
           onClick={handleLogout}
           className="flex flex-col items-center bg-transparent border-none shadow-none focus:outline-none"

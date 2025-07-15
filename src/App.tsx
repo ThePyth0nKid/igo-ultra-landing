@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Routes, Route } from "react-router-dom"
 import Hero from "./components/Hero"
 import Mission from "./components/Mission"
@@ -15,12 +15,15 @@ import DiscordCallback from "./pages/DiscordCallback"
 import OnboardingContainer from "./pages/Onboarding";
 import PrivateRoute from "./components/auth/PrivateRoute"
 import LayoutWithNavbar from "./components/layout/LayoutWithNavbar"
+import LayoutWithSidebar from "./components/layout/LayoutWithSidebar";
+import LayoutWithBottomNav from "./components/layout/LayoutWithBottomNav";
 import Impressum from "./pages/Impressum"
 import Datenschutz from "./pages/Datenschutz"
 import Kontakt from "./pages/Kontakt"
 import Leaderboard from "./pages/Leaderboard"
 import ComingSoon from './pages/ComingSoon';
 import ProfileEdit from "./pages/ProfileEdit";
+import AdminPanel from "./pages/AdminPanel";
 
 const App = () => {
   return (
@@ -87,6 +90,16 @@ const App = () => {
           }
         />
 
+        {/* Admin Panel */}
+        <Route
+          path="/admin-panel"
+          element={
+            <PrivateRoute>
+              <ResponsiveAdminPanelWrapper />
+            </PrivateRoute>
+          }
+        />
+
         {/* Coming Soon page */}
         <Route path="/coming-soon" element={<ComingSoon />} />
 
@@ -101,5 +114,22 @@ const App = () => {
     </div>
   )
 }
+
+// Wrapper-Komponente für AdminPanel mit Sidebar oder BottomNav
+const ResponsiveAdminPanelWrapper: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+  return (
+    <Layout>
+      <AdminPanel />
+    </Layout>
+  );
+};
 
 export default App
