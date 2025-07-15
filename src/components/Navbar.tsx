@@ -96,7 +96,7 @@ const Navbar = () => {
             initial={{ y: -20, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -20, opacity: 0 }}
-            className="fixed top-16 right-6 w-72 max-w-full bg-black/95 z-50 px-6 py-6 flex flex-col items-center gap-6 text-white text-xl backdrop-blur rounded-xl shadow-2xl border border-gray-800"
+            className="fixed top-16 right-6 w-72 max-w-full bg-black/5 z-50 px-6 py-6 flex flex-col items-center gap-6 text-white text-xl backdrop-blur-2xl rounded-xl shadow-2xl border border-gray-800"
             style={{ minWidth: '220px' }}
           >
             {/* Willkommen-Text ganz oben */}
