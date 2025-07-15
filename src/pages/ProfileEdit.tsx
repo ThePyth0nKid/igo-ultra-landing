@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { authFetch, fetchCurrentUser } from "@/lib/api";
 import { useLocation, useNavigate } from "react-router-dom";
 import LayoutWithSidebar from "@/components/layout/LayoutWithSidebar";
+import LayoutWithBottomNav from "@/components/layout/LayoutWithBottomNav";
 
 const ProfileEdit: React.FC = () => {
   const [user, setUser] = useState<any>(null);
@@ -10,6 +11,7 @@ const ProfileEdit: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const location = useLocation();
   const navigate = useNavigate();
@@ -21,6 +23,15 @@ const ProfileEdit: React.FC = () => {
         setPreview(data.avatar_url || null);
       })
       .catch(() => setUser(null));
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640); // sm breakpoint
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,8 +79,10 @@ const ProfileEdit: React.FC = () => {
     return <div className="text-center text-gray-400 py-10">Lade Profil…</div>;
   }
 
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+
   return (
-    <LayoutWithSidebar>
+    <Layout>
       <div className="max-w-xl mx-auto mt-12 p-6 bg-black/80 rounded-xl shadow-lg border border-gray-800">
         <h1 className="text-3xl font-bold mb-6 text-ultra-red">Profil bearbeiten</h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
@@ -110,7 +123,7 @@ const ProfileEdit: React.FC = () => {
         <FactionEdit user={user} onSuccess={() => fetchCurrentUser().then(data => setUser(data))} />
         <DeleteAccountSection />
       </div>
-    </LayoutWithSidebar>
+    </Layout>
   );
 };
 

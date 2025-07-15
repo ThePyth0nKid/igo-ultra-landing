@@ -9,6 +9,8 @@ import ChooseFactionStep from '../components/onboarding/ChooseFactionStep';
 import ChooseOriginStep from '../components/onboarding/ChooseOriginStep';
 import WriteBioStep from '../components/onboarding/WriteBioStep';
 import CreateAvatarStep from '../components/onboarding/CreateAvatarStep';
+import LayoutWithSidebar from "@/components/layout/LayoutWithSidebar";
+import LayoutWithBottomNav from "@/components/layout/LayoutWithBottomNav";
 
 interface Faction {
   id: number;
@@ -41,11 +43,21 @@ const OnboardingContainer: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchUser();
     // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640); // sm breakpoint
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const fetchUser = async () => {
@@ -85,12 +97,16 @@ const OnboardingContainer: React.FC = () => {
   else if (nextField === 'bio') StepComponent = <WriteBioStep user={user} onSuccess={fetchUser} />;
   else if (nextField === 'avatar_url') StepComponent = <CreateAvatarStep user={user} onSuccess={fetchUser} />;
 
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
-      <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
-        {StepComponent}
+    <Layout>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-gray-800">
+        <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8">
+          {StepComponent}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

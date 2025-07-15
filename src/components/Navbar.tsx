@@ -98,6 +98,23 @@ const Navbar = () => {
             className="fixed top-16 right-6 w-72 max-w-full bg-black/95 z-50 px-6 py-6 flex flex-col items-center gap-6 text-white text-xl backdrop-blur rounded-xl shadow-2xl border border-gray-800"
             style={{ minWidth: '220px' }}
           >
+            {/* Willkommen-Text ganz oben */}
+            {user && (!user.missing_onboarding_fields || user.missing_onboarding_fields.length === 0) && (
+              <span className="text-white text-sm text-center font-light mb-2 block w-full">
+                {user.ultra_name ? (
+                  <>
+                    Willkommen, <span className="font-semibold">{user.ultra_name}</span>
+                  </>
+                ) : (
+                  <>
+                    Willkommen, <span className="font-semibold">{user.username}</span>
+                  </>
+                )}
+                {user.level !== undefined && (
+                  <span className="ml-2 text-ultra-red">Lv. {user.level}</span>
+                )}
+              </span>
+            )}
             {/* Ultra-Section Navigation */}
             <div className="flex flex-col gap-2 w-full mb-4">
               {location.pathname === "/" ? (
@@ -154,20 +171,18 @@ const Navbar = () => {
               </Button>
             ) : (
               <>
-                <span className="text-white text-sm text-center font-light">
-                  {user.ultra_name ? (
-                    <>
-                      Willkommen, <span className="font-semibold">{user.ultra_name}</span>
-                    </>
-                  ) : (
-                    <>
-                      Willkommen, <span className="font-semibold">{user.username}</span>
-                    </>
-                  )}
-                  {user.level !== undefined && (
-                    <span className="ml-2 text-ultra-red">Lv. {user.level}</span>
-                  )}
-                </span>
+                {/* Dashboard-Button, nur wenn nicht auf /dashboard */}
+                {location.pathname !== "/dashboard" && (
+                  <button
+                    onClick={() => {
+                      navigate("/dashboard");
+                      setMenuOpen(false);
+                    }}
+                    className="w-full py-2 px-4 rounded-lg bg-white/10 hover:bg-ultra-red/20 text-ultra-red font-bold text-lg transition-all border-2 border-ultra-red mb-2"
+                  >
+                    Dashboard
+                  </button>
+                )}
                 <button
                   onClick={() => {
                     navigate("/leaderboard");

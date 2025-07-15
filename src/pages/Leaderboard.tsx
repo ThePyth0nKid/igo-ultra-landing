@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllSeasons, fetchSeasonXP } from "@/lib/api";
 import LayoutWithSidebar from "@/components/layout/LayoutWithSidebar";
+import LayoutWithBottomNav from "@/components/layout/LayoutWithBottomNav";
 
 const LAYERS = [
   "BaseLayer",
@@ -22,6 +23,7 @@ const Leaderboard = () => {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     fetchAllSeasons()
@@ -43,8 +45,19 @@ const Leaderboard = () => {
       .finally(() => setLoading(false));
   }, [season, selectedLayer]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 640); // sm breakpoint
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+
   return (
-    <LayoutWithSidebar>
+    <Layout>
       <div className="min-h-screen bg-black text-white px-4 py-10 max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold mb-8 text-ultra-red">Leaderboard</h1>
         <div className="mb-4">
@@ -76,33 +89,32 @@ const Leaderboard = () => {
         </div>
         {loading && <div className="text-gray-400">Lade Leaderboard...</div>}
         {error && <div className="text-red-500">{error}</div>}
-        {!loading && !error && (
-          <table className="w-full text-left border-separate border-spacing-y-2">
-            <thead>
-              <tr className="text-xs text-gray-400">
-                <th className="px-2">#</th>
-                <th className="px-2">Name</th>
-                <th className="px-2">XP</th>
-                <th className="px-2">Layer</th>
+        {/* Tabelle */}
+        <table className="w-full text-left border-separate border-spacing-y-2">
+          <thead>
+            <tr className="text-xs text-gray-400">
+              <th className="px-2">#</th>
+              <th className="px-2">Name</th>
+              <th className="px-2">XP</th>
+              <th className="px-2">Layer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.map((entry, i) => (
+              <tr
+                key={entry.user + i}
+                className={`rounded-lg ${i < 3 ? "bg-ultra-red/10" : "bg-white/5"}`}
+              >
+                <td className="px-2 py-1 font-bold">{i + 1}</td>
+                <td className="px-2 py-1">{entry.user}</td>
+                <td className="px-2 py-1">{entry.xp}</td>
+                <td className="px-2 py-1">{entry.layer_type}</td>
               </tr>
-            </thead>
-            <tbody>
-              {data.map((entry, i) => (
-                <tr
-                  key={entry.user + i}
-                  className={`rounded-lg ${i < 3 ? "bg-ultra-red/10" : "bg-white/5"}`}
-                >
-                  <td className="px-2 py-1 font-bold">{i + 1}</td>
-                  <td className="px-2 py-1">{entry.user}</td>
-                  <td className="px-2 py-1">{entry.xp}</td>
-                  <td className="px-2 py-1">{entry.layer_type}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+            ))}
+          </tbody>
+        </table>
       </div>
-    </LayoutWithSidebar>
+    </Layout>
   );
 };
 
