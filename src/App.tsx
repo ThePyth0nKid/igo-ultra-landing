@@ -26,6 +26,9 @@ import ProfileEdit from "./pages/ProfileEdit";
 import AdminPanel from "./pages/AdminPanel";
 import UserDetail from "@/components/admin/UserDetail";
 import UserCreate from "@/components/admin/UserCreate";
+import SeasonList from "@/components/admin/SeasonList";
+import SeasonDetail from "@/components/admin/SeasonDetail";
+import SeasonCreate from "@/components/admin/SeasonCreate";
 
 const App = () => {
   return (
@@ -73,9 +76,7 @@ const App = () => {
           path="/leaderboard"
           element={
             <PrivateRoute>
-              <LayoutWithNavbar>
-                <Leaderboard />
-              </LayoutWithNavbar>
+              <ResponsiveLeaderboardWrapper />
             </PrivateRoute>
           }
         />
@@ -114,6 +115,31 @@ const App = () => {
           element={
             <PrivateRoute>
               <ResponsiveAdminPanelWrapperUserCreate />
+            </PrivateRoute>
+          }
+        />
+        {/* Season Admin */}
+        <Route
+          path="/admin-panel/seasons"
+          element={
+            <PrivateRoute>
+              <ResponsiveAdminPanelWrapperSeasonList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin-panel/seasons/:id"
+          element={
+            <PrivateRoute>
+              <ResponsiveAdminPanelWrapperSeasonDetail />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/admin-panel/seasons/create"
+          element={
+            <PrivateRoute>
+              <ResponsiveAdminPanelWrapperSeasonCreate />
             </PrivateRoute>
           }
         />
@@ -180,6 +206,72 @@ const ResponsiveAdminPanelWrapperUserCreate: React.FC = () => {
   return (
     <Layout>
       <UserCreate />
+    </Layout>
+  );
+};
+
+// Wrapper-Komponente für SeasonList mit Sidebar oder BottomNav
+const ResponsiveAdminPanelWrapperSeasonList: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+  return (
+    <Layout>
+      <SeasonList />
+    </Layout>
+  );
+};
+// Wrapper-Komponente für SeasonDetail mit Sidebar oder BottomNav
+const ResponsiveAdminPanelWrapperSeasonDetail: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+  return (
+    <Layout>
+      <SeasonDetail />
+    </Layout>
+  );
+};
+// Wrapper-Komponente für SeasonCreate mit Sidebar oder BottomNav
+const ResponsiveAdminPanelWrapperSeasonCreate: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+  return (
+    <Layout>
+      <SeasonCreate />
+    </Layout>
+  );
+};
+
+// Wrapper-Komponente für Leaderboard mit Sidebar oder BottomNav
+const ResponsiveLeaderboardWrapper: React.FC = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 640);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  const Layout = isMobile ? LayoutWithBottomNav : LayoutWithSidebar;
+  return (
+    <Layout>
+      <Leaderboard />
     </Layout>
   );
 };
