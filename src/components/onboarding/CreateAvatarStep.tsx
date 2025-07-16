@@ -32,25 +32,32 @@ const CreateAvatarStep: React.FC<CreateAvatarStepProps> = ({ user, onSuccess }) 
     setError(null);
     setSuccess(false);
     try {
+      console.log("[AvatarUpload] Starte Presign-Request", file);
       // 1. Presigned URL vom Backend holen
       const presignRes = await authFetch('/users/avatar/presign/', {
         method: 'POST',
         body: JSON.stringify({ file_name: file.name, file_type: file.type }),
       });
+      console.log("[AvatarUpload] Presign-Response Status:", presignRes.status);
       if (!presignRes.ok) {
         const data = await presignRes.json();
+        console.error("[AvatarUpload] Fehler beim Presign-Request:", data);
         setError(data.detail || 'Fehler beim Anfordern der Presigned URL');
         setLoading(false);
         return;
       }
       const { data, url } = await presignRes.json();
+      console.log("[AvatarUpload] Presign-Response Data:", data, url);
+      console.log("[AvatarUpload] S3-Upload-URL:", data.url);
 
       // 2. Bild direkt zu S3 hochladen
       const formData = new FormData();
       Object.entries(data.fields).forEach(([k, v]) => formData.append(k, v as string));
       formData.append('file', file);
       const s3Res = await fetch(data.url, { method: 'POST', body: formData });
+      console.log("[AvatarUpload] S3-Upload Response Status:", s3Res.status);
       if (!s3Res.ok) {
+        console.error("[AvatarUpload] Fehler beim Upload zu S3:", await s3Res.text());
         setError('Fehler beim Upload zu S3');
         setLoading(false);
         return;
@@ -61,8 +68,10 @@ const CreateAvatarStep: React.FC<CreateAvatarStepProps> = ({ user, onSuccess }) 
         method: 'PATCH',
         body: JSON.stringify({ avatar_url: url }),
       });
+      console.log("[AvatarUpload] Avatar speichern Response Status:", saveRes.status);
       if (!saveRes.ok) {
         const data = await saveRes.json();
+        console.error("[AvatarUpload] Fehler beim Speichern des Avatars:", data);
         setError(data.detail || 'Fehler beim Speichern des Avatars');
         setLoading(false);
         return;
@@ -73,6 +82,7 @@ const CreateAvatarStep: React.FC<CreateAvatarStepProps> = ({ user, onSuccess }) 
       setPreview(url);
       onSuccess();
     } catch (e: any) {
+      console.error("[AvatarUpload] Unerwarteter Fehler:", e);
       setError(e.message);
       setLoading(false);
     }
