@@ -53,7 +53,7 @@ const ProfileEdit: React.FC = () => {
     setSuccess(false);
     try {
       // 1. Presigned URL vom Backend holen
-      const presignRes = await authFetch('/api/users/avatar/presign/', {
+      const presignRes = await authFetch('/users/avatar/presign/', {
         method: 'POST',
         body: JSON.stringify({ file_name: file.name, file_type: file.type }),
       });
@@ -77,7 +77,7 @@ const ProfileEdit: React.FC = () => {
       }
 
       // 3. Avatar-URL im Backend speichern
-      const saveRes = await authFetch('/api/users/avatar/', {
+      const saveRes = await authFetch('/users/avatar/', {
         method: 'PATCH',
         body: JSON.stringify({ avatar_url: url }),
       });
@@ -107,7 +107,7 @@ const ProfileEdit: React.FC = () => {
     setError(null);
     setSuccess(false);
     try {
-      const res = await authFetch('/api/users/avatar/', {
+      const res = await authFetch('/users/avatar/', {
         method: 'DELETE',
       });
       if (!res.ok) {
