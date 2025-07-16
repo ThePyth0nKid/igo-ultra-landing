@@ -11,37 +11,92 @@ const CreateAvatarStep: React.FC<CreateAvatarStepProps> = ({ user, onSuccess }) 
   const [preview, setPreview] = useState<string | null>(user.avatar_url || null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f = e.target.files?.[0] || null;
     setFile(f);
+    setError(null);
+    setSuccess(false);
     if (f) {
       setPreview(URL.createObjectURL(f));
     }
   };
 
+  // NEU: Avatar direkt zu S3 hochladen und im Backend speichern
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!file) return;
     setLoading(true);
     setError(null);
+    setSuccess(false);
     try {
-      const formData = new FormData();
-      formData.append('avatar', file);
-      const res = await authFetch('/api/v1/auth/avatar-upload/', {
+      // 1. Presigned URL vom Backend holen
+      const presignRes = await authFetch('/api/users/avatar/presign/', {
         method: 'POST',
-        body: formData,
+        body: JSON.stringify({ file_name: file.name, file_type: file.type }),
       });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.detail || 'Fehler beim Hochladen des Avatars');
+      if (!presignRes.ok) {
+        const data = await presignRes.json();
+        setError(data.detail || 'Fehler beim Anfordern der Presigned URL');
         setLoading(false);
         return;
       }
-      // Optional: avatar_url aus der Antwort holen und anzeigen
-      // const data = await res.json();
-      // setPreview(data.avatar_url);
+      const { data, url } = await presignRes.json();
+
+      // 2. Bild direkt zu S3 hochladen
+      const formData = new FormData();
+      Object.entries(data.fields).forEach(([k, v]) => formData.append(k, v as string));
+      formData.append('file', file);
+      const s3Res = await fetch(data.url, { method: 'POST', body: formData });
+      if (!s3Res.ok) {
+        setError('Fehler beim Upload zu S3');
+        setLoading(false);
+        return;
+      }
+
+      // 3. Avatar-URL im Backend speichern
+      const saveRes = await authFetch('/api/users/avatar/', {
+        method: 'PATCH',
+        body: JSON.stringify({ avatar_url: url }),
+      });
+      if (!saveRes.ok) {
+        const data = await saveRes.json();
+        setError(data.detail || 'Fehler beim Speichern des Avatars');
+        setLoading(false);
+        return;
+      }
+      setSuccess(true);
+      setLoading(false);
+      setFile(null);
+      setPreview(url);
+      onSuccess();
+    } catch (e: any) {
+      setError(e.message);
+      setLoading(false);
+    }
+  };
+
+  // NEU: Avatar löschen
+  const handleAvatarDelete = async () => {
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
+    try {
+      const res = await authFetch('/api/users/avatar/', {
+        method: 'DELETE',
+      });
+      if (!res.ok) {
+        const data = await res.json();
+        setError(data.detail || 'Fehler beim Löschen des Avatars');
+        setLoading(false);
+        return;
+      }
+      setSuccess(true);
+      setLoading(false);
+      setFile(null);
+      setPreview(null);
       onSuccess();
     } catch (e: any) {
       setError(e.message);
@@ -65,16 +120,30 @@ const CreateAvatarStep: React.FC<CreateAvatarStepProps> = ({ user, onSuccess }) 
             ref={fileInputRef}
             onChange={handleFileChange}
           />
-          <button
-            type="button"
-            className="bg-white border border-ultra-red text-ultra-red px-4 py-2 rounded-lg font-semibold hover:bg-ultra-red hover:text-white transition"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            {file ? 'Anderes Bild wählen' : 'Bild auswählen'}
-          </button>
+          <div className="flex gap-2">
+            <button
+              type="button"
+              className="bg-white border border-ultra-red text-ultra-red px-4 py-2 rounded-lg font-semibold hover:bg-ultra-red hover:text-white transition"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={loading}
+            >
+              {file ? 'Anderes Bild wählen' : 'Bild auswählen'}
+            </button>
+            {preview && (
+              <button
+                type="button"
+                className="bg-red-700 border border-ultra-red text-white px-4 py-2 rounded-lg font-semibold hover:bg-ultra-red hover:text-white transition"
+                onClick={handleAvatarDelete}
+                disabled={loading}
+              >
+                Avatar löschen
+              </button>
+            )}
+          </div>
         </div>
       </div>
       {error && <div className="text-red-600 text-sm">{error}</div>}
+      {success && <div className="text-green-500 text-sm">Aktion erfolgreich!</div>}
       <button
         type="submit"
         className="bg-gradient-to-r from-ultra-red to-pink-600 text-white py-2 px-4 rounded-lg font-semibold hover:from-pink-600 hover:to-ultra-red transition disabled:opacity-50"
