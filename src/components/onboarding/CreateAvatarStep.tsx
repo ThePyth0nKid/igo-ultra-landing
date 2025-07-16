@@ -49,6 +49,7 @@ const CreateAvatarStep: React.FC<CreateAvatarStepProps> = ({ user, onSuccess }) 
       const { data, url } = await presignRes.json();
       console.log("[AvatarUpload] Presign-Response Data:", data, url);
       console.log("[AvatarUpload] S3-Upload-URL:", data.url);
+      console.log("S3 Presign Key:", data.fields.key);
 
       // 2. Bild direkt zu S3 hochladen
       const formData = new FormData();
